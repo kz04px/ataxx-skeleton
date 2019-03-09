@@ -7,6 +7,7 @@
 #include "position.hpp"
 #include "perft.hpp"
 #include "protocol.hpp"
+#include "search.hpp"
 #include "options.hpp"
 
 bool test_fen()
@@ -145,12 +146,42 @@ bool test_uai_setoption()
     return true;
 }
 
+bool test_pv()
+{
+    const std::pair<std::string, PV> legal_tests[] = {
+        {"startpos", {Move(Square::g2)}},
+        {"startpos", {Move(Square::g2), Move(Square::a1, Square::b3)}}
+    };
+    for(const auto &[fen, pv] : legal_tests)
+    {
+        Position pos;
+        set_fen(pos, fen);
+        if(!legal_pv(pos, pv)) {return false;}
+    }
+
+    const std::pair<std::string, PV> illegal_tests[] = {
+        {"startpos", {Move(Square::g1)}},
+        {"startpos", {Move(Square::a2)}},
+        {"startpos", {Move(Square::g2), Move(Square::g2)}},
+        {"startpos", {Move(Square::g1, Square::e3)}}
+    };
+    for(const auto &[fen, pv] : illegal_tests)
+    {
+        Position pos;
+        set_fen(pos, fen);
+        if(legal_pv(pos, pv)) {return false;}
+    }
+
+    return true;
+}
+
 void test()
 {
 Options::print();
     std::cout << (test_fen()     ? "Y" : "N") << " -- FEN parsing" << std::endl;
     std::cout << (test_perft()   ? "Y" : "N") << " -- Perft" << std::endl;
     std::cout << (test_options() ? "Y" : "N") << " -- Options" << std::endl;
+    std::cout << (test_pv()      ? "Y" : "N") << " -- PV" << std::endl;
     // UAI
     std::cout << (test_uai_pos()       ? "Y" : "N") << " -- UAI::position" << std::endl;
     std::cout << (test_uai_moves()     ? "Y" : "N") << " -- UAI::moves" << std::endl;

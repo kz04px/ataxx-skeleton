@@ -2,7 +2,9 @@
 #define SEARCH_HPP
 
 #include <cstdint>
+#include <vector>
 #include "position.hpp"
+#include "move.hpp"
 
 enum SearchType
 {
@@ -36,6 +38,9 @@ struct SearchStats
     int seldepth = 0;
 };
 
+typedef std::vector<Move> PV;
+
 void search(const Position &pos, const SearchOptions options);
+bool legal_pv(const Position &pos, const PV &pv);
 
 #endif

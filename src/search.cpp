@@ -26,3 +26,15 @@ void search(const Position &pos, const SearchOptions options)
             return;
     }
 }
+
+// Check the legality of a PV based on a given board
+bool legal_pv(const Position &pos, const PV &pv)
+{
+    Position npos = pos;
+    for(const auto &move : pv)
+    {
+        if(!legal_move(npos, move)) {return false;}
+        makemove(npos, move);
+    }
+    return true;
+}
