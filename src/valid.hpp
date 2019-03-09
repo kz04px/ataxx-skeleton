@@ -50,14 +50,21 @@ inline bool legal_move(const Position &pos, const Move &move)
 {
     const int from = move.from();
     const int to = move.to();
-    const std::uint64_t from_bb = 1ULL << from;
-    const std::uint64_t to_bb = 1ULL << to;
     const std::uint64_t filled = pos.pieces[Side::Black] | pos.pieces[Side::White] | pos.gaps;
 
-    if(!pseudolegal_move(move)) {return false;}
-    if(to_bb & filled) {return false;}
-    if(from != to && !(from_bb & pos.pieces[pos.turn])) {return false;}
-    return true;
+    // Make sure the destination square is empty
+    if((1ULL << to) & filled) {return false;}
+
+    // Single moves
+    if(from == to)
+    {
+        return single_moves(to) & pos.pieces[pos.turn];
+    }
+    // Double moves
+    else
+    {
+        return double_moves(to) & pos.pieces[pos.turn] & (1ULL << from);
+    }
 }
 
 #endif
