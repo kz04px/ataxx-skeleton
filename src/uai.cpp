@@ -68,7 +68,7 @@ namespace UAI
             Move parsed_move = parse_san(word);
 
             // Check the move is legal
-            Move moves[256];
+            Move moves[MAX_MOVES];
             int num_moves = movegen(pos, moves);
             for(int i = 0; i < num_moves; ++i)
             {
@@ -155,7 +155,7 @@ namespace UAI
         if(depth < 1) {depth = 1;}
 
         std::uint64_t total_nodes = 0ULL;
-        Move moves[256];
+        Move moves[MAX_MOVES];
         int num_moves = movegen(pos, moves);
         for(int i = 0; i < num_moves; ++i)
         {

@@ -5,7 +5,7 @@
 #include "other.hpp"
 
 // Generate all legal moves for the positiono specified
-// Maximum of 256 moves
+// At most MAX_MOVES can be generated
 int movegen(const Position &pos, Move *moves)
 {
     assert(moves);
@@ -22,6 +22,7 @@ int movegen(const Position &pos, Move *moves)
     std::uint64_t singles = adjacent(pieces) & empty;
     while(singles)
     {
+        assert(num_moves < MAX_MOVES);
         const int to = lsbll(singles);
         moves[num_moves] = Move(to);
         num_moves++;
@@ -36,6 +37,7 @@ int movegen(const Position &pos, Move *moves)
         std::uint64_t destinations = double_moves(from) & empty;
         while(destinations)
         {
+            assert(num_moves < MAX_MOVES);
             const int to = lsbll(destinations);
             moves[num_moves] = Move(from, to);
             num_moves++;
@@ -50,6 +52,5 @@ int movegen(const Position &pos, Move *moves)
         assert(legal_move(pos, moves[i]));
     }
 
-    assert(num_moves < 256);
     return num_moves;
 }
