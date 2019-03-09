@@ -61,6 +61,7 @@ void set_fen(Position &pos, const std::string &fen);
 std::string get_fen(const Position &pos);
 std::uint64_t single_moves(const int sq);
 std::uint64_t double_moves(const int sq);
+std::uint64_t adjacent(const std::uint64_t bb);
 void print(const Position &pos);
 
 #endif

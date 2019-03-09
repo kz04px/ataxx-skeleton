@@ -180,6 +180,18 @@ std::uint64_t double_moves(const int sq)
     return dist2[sq];
 }
 
+std::uint64_t adjacent(const std::uint64_t bb)
+{
+    return Board::All & (((bb>>1) & (Board::NotFileG)) | // Left 1
+                         ((bb<<1) & (Board::NotFileA)) | // Right 1
+                          (bb<<7) |                      // Up 1
+                          (bb>>7) |                      // Down 1
+                         ((bb<<8) & (Board::NotFileA)) | // Up 1 right 1
+                         ((bb<<6) & (Board::NotFileG)) | // Up 1 left 1
+                         ((bb>>8) & (Board::NotFileG)) | // Down 1 left 1
+                         ((bb>>6) & (Board::NotFileA))); // Down 1 right 1
+}
+
 // Prints a simple ascii board to cout
 void print(const Position &pos)
 {

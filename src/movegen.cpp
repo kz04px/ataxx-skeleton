@@ -4,18 +4,6 @@
 #include "valid.hpp"
 #include "other.hpp"
 
-std::uint64_t single_jump(const std::uint64_t bb)
-{
-    return Board::All & (((bb>>1) & (Board::NotFileG)) | // Left 1
-                         ((bb<<1) & (Board::NotFileA)) | // Right 1
-                          (bb<<7) |                      // Up 1
-                          (bb>>7) |                      // Down 1
-                         ((bb<<8) & (Board::NotFileA)) | // Up 1 right 1
-                         ((bb<<6) & (Board::NotFileG)) | // Up 1 left 1
-                         ((bb>>8) & (Board::NotFileG)) | // Down 1 left 1
-                         ((bb>>6) & (Board::NotFileA))); // Down 1 right 1
-}
-
 // Generate all legal moves for the positiono specified
 // Maximum of 256 moves
 int movegen(const Position &pos, Move *moves)
@@ -31,7 +19,7 @@ int movegen(const Position &pos, Move *moves)
     int num_moves = 0;
 
     // Single moves
-    std::uint64_t singles = single_jump(pieces) & empty;
+    std::uint64_t singles = adjacent(pieces) & empty;
     while(singles)
     {
         const int to = lsbll(singles);
