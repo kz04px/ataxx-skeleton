@@ -196,7 +196,7 @@ namespace UAI
                 stream >> options.depth;
             }
             // Infinite search
-            else if(word == "depth")
+            else if(word == "infinite")
             {
                 options.type = SearchType::Infinite;
             }
