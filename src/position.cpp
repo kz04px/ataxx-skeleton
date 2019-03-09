@@ -180,6 +180,22 @@ std::uint64_t double_moves(const int sq)
     return dist2[sq];
 }
 
+// Check if the game is over
+// -- No black stones left
+// -- No white stones left
+// -- No empty spaces left
+bool gameover(const Position &pos)
+{
+    const std::uint64_t empty = Board::All ^ (pos.pieces[Side::Black] |
+                                              pos.pieces[Side::White] |
+                                              pos.gaps);
+
+    if(!pos.pieces[Side::Black]) {return true;}
+    if(!pos.pieces[Side::White]) {return true;}
+    if(!empty) {return true;}
+    return false;
+}
+
 std::uint64_t adjacent(const std::uint64_t bb)
 {
     return Board::All & (((bb>>1) & (Board::NotFileG)) | // Left 1
