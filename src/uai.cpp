@@ -178,6 +178,8 @@ namespace UAI
     // Start searching for a best move (threaded)
     void go(const Position &pos, std::stringstream &stream)
     {
+        stop();
+
         SearchOptions options;
         std::string word;
 
