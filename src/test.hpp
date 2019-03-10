@@ -199,7 +199,6 @@ bool test_gameover()
 
 void test()
 {
-Options::print();
     std::cout << (test_fen()      ? "Y" : "N") << " -- FEN parsing" << std::endl;
     std::cout << (test_perft()    ? "Y" : "N") << " -- Perft" << std::endl;
     std::cout << (test_options()  ? "Y" : "N") << " -- Options" << std::endl;
