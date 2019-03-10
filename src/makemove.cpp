@@ -24,21 +24,6 @@ void makemove(Position &pos, const Move &move)
     pos.pieces[them] ^= captured;
     pos.pieces[us] ^= captured;
 
-    // Increment halfmoves
-    pos.halfmoves++;
-
-    // Increment fullmoves
-    if(pos.turn == Side::White)
-    {
-        pos.fullmoves++;
-    }
-
-    // Reset halfmove counter on single or capturing moves
-    if(to == from || captured)
-    {
-        pos.halfmoves = 0;
-    }
-
     pos.turn = !pos.turn;
 
     assert(legal_board(pos));

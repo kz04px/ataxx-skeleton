@@ -18,8 +18,6 @@ void set_fen(Position &pos, const std::string &fen)
     pos.gaps = 0ULL;
     pos.hash = 0ULL;
     pos.turn = Side::Black;
-    pos.halfmoves = 0;
-    pos.fullmoves = 1;
 
     std::stringstream ss{fen};
     std::string word;
@@ -80,30 +78,6 @@ void set_fen(Position &pos, const std::string &fen)
             pos.turn = Side::White;
         }
     }
-
-    // Halfmoves
-    if(ss >> word)
-    {
-        try
-        {
-            pos.halfmoves = std::stoi(word);
-        }
-        catch(...)
-        {
-        }
-    }
-
-    // Fullmoves
-    if(ss >> word)
-    {
-        try
-        {
-            pos.fullmoves = std::stoi(word);
-        }
-        catch(...)
-        {
-        }
-    }
 }
 
 // Return a fen string from a given position
@@ -156,12 +130,6 @@ std::string get_fen(const Position &pos)
     {
         fen += " w";
     }
-
-    // Halfmoves
-    fen += " " + std::to_string(pos.halfmoves);
-
-    // Fullmoves
-    fen += " " + std::to_string(pos.fullmoves);
 
     return fen;
 }
@@ -228,8 +196,6 @@ void print(const Position &pos)
         }
         sq++;
     }
-    std::cout << "Halfmoves: " << pos.halfmoves << std::endl;
-    std::cout << "Fullmoves: " << pos.fullmoves << std::endl;
     std::cout << "Hash: " << pos.hash << std::endl;
     std::cout << "Turn: " << (pos.turn == Side::Black ? "b" : "w") << std::endl;
     std::cout << "FEN: " << get_fen(pos) << std::endl;

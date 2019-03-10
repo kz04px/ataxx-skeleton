@@ -15,7 +15,7 @@
 bool test_fen()
 {
     const std::string tests[] = {
-        "x5o/7/2-1-2/7/2-1-2/7/o5x b 0 1"
+        "x5o/7/2-1-2/7/2-1-2/7/o5x b"
     };
     for(const auto &fen : tests)
     {
@@ -31,17 +31,22 @@ bool test_fen()
 
 bool test_perft()
 {
-    const std::pair<std::string, std::uint64_t> tests[] = {
-        {"x5o/7/2-1-2/7/2-1-2/7/o5x b 0 1", 14},
-        {"x5o/7/7/7/7/7/o5x b 0 1", 16}
+    const std::pair<std::string, std::vector<std::uint64_t>> tests[] = {
+        {"startpos", {14, 196, 4184, 86528}},
+        {"x5o/7/7/7/7/7/o5x b", {16, 256, 6460, 155888}},
+        {"7/7/7/7/7/7/7 b", {0, 0, 0, 0}}
     };
     for(const auto &[fen, nodes] : tests)
     {
         Position pos;
         set_fen(pos, fen);
-        if(nodes != perft(pos, 1))
+
+        for(unsigned int i = 0; i < nodes.size(); ++i)
         {
-            return false;
+            if(nodes[i] != perft(pos, i+1))
+            {
+                return false;
+            }
         }
     }
     return true;
@@ -50,13 +55,13 @@ bool test_perft()
 bool test_uai_pos()
 {
     const std::pair<std::string, std::string> tests[] = {
-        {"startpos", "x5o/7/2-1-2/7/2-1-2/7/o5x b 0 1"},
-        {"startpos moves g2", "x5o/7/2-1-2/7/2-1-2/6x/o5x w 0 1"},
-        {"startpos moves g2 a1a3", "x5o/7/2-1-2/7/o1-1-2/6x/6x b 1 2"},
-        {"fen x5o/7/2-1-2/7/2-1-2/7/o5x", "x5o/7/2-1-2/7/2-1-2/7/o5x b 0 1"},
-        {"fen x5o/7/2-1-2/7/2-1-2/7/o5x w", "x5o/7/2-1-2/7/2-1-2/7/o5x w 0 1"},
-        {"fen x5o/7/2-1-2/7/2-1-2/7/o5x b 2", "x5o/7/2-1-2/7/2-1-2/7/o5x b 2 1"},
-        {"fen x5o/7/2-1-2/7/2-1-2/7/o5x w 2 5", "x5o/7/2-1-2/7/2-1-2/7/o5x w 2 5"}
+        {"startpos", "x5o/7/2-1-2/7/2-1-2/7/o5x b"},
+        {"startpos moves g2", "x5o/7/2-1-2/7/2-1-2/6x/o5x w"},
+        {"startpos moves g2 a1a3", "x5o/7/2-1-2/7/o1-1-2/6x/6x b"},
+        {"fen x5o/7/2-1-2/7/2-1-2/7/o5x", "x5o/7/2-1-2/7/2-1-2/7/o5x b"},
+        {"fen x5o/7/2-1-2/7/2-1-2/7/o5x w", "x5o/7/2-1-2/7/2-1-2/7/o5x w"},
+        {"fen x5o/7/2-1-2/7/2-1-2/7/o5x b", "x5o/7/2-1-2/7/2-1-2/7/o5x b"},
+        {"fen x5o/7/2-1-2/7/2-1-2/7/o5x w", "x5o/7/2-1-2/7/2-1-2/7/o5x w"}
     };
     for(const auto &[input, fen] : tests)
     {
@@ -65,7 +70,6 @@ bool test_uai_pos()
         UAI::position(pos, ss);
         if(get_fen(pos) != fen)
         {
-            std::cout << fen << std::endl;
             return false;
         }
     }
@@ -75,7 +79,7 @@ bool test_uai_pos()
 bool test_uai_moves()
 {
     const std::pair<std::string, std::string> tests[] = {
-        {"g2 a1a3", "x5o/7/2-1-2/7/o1-1-2/6x/6x b 1 2"}
+        {"g2 a1a3", "x5o/7/2-1-2/7/o1-1-2/6x/6x b"}
     };
     for(const auto &[moves, fen] : tests)
     {
@@ -85,7 +89,6 @@ bool test_uai_moves()
         UAI::moves(pos, s);
         if(get_fen(pos) != fen)
         {
-            std::cout << get_fen(pos) << std::endl;
             return false;
         }
     }

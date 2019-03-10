@@ -52,8 +52,6 @@ struct Position
     std::uint64_t pieces[2] = {0ULL, 0ULL};
     std::uint64_t gaps = 0ULL;
     std::uint64_t hash = 0ULL;
-    unsigned int halfmoves = 0;
-    unsigned int fullmoves = 0;
     bool turn = Side::Black;
 };
 
