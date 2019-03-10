@@ -186,7 +186,12 @@ bool test_gameover()
         {"xxxxxxx/xxxxxxx/xxxxxxx/xxxxxxx/xxxxxxx/xxxxxxx/xxxxxxx", true},
         {"ooooooo/ooooooo/ooooooo/ooooooo/ooooooo/ooooooo/ooooooo", true},
         {"xxxxxxx/xxxxxxx/xxxxxxx/xxxxxxx/xxxxxxx/xxxxxxx/ooooooo", true},
-        {"ooooooo/ooooooo/ooooooo/ooooooo/ooooooo/ooooooo/xxxxxxx", true}
+        {"ooooooo/ooooooo/ooooooo/ooooooo/ooooooo/ooooooo/xxxxxxx", true},
+        {"-------/-------/-------/-------/-------/-------/-------", true},
+        {"-------/-------/-------/-------/-------/-------/-----xo", true},
+        {"-------/-------/-------/-------/-------/-------/-----xx", true},
+        {"-------/-------/-------/-------/-------/-------/-----oo", true},
+        {"xxxxxxx/-------/-------/7/-------/-------/ooooooo", true}
     };
     for(const auto &[fen, expected] : tests)
     {
