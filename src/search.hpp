@@ -49,6 +49,7 @@ struct SearchStack
     PV pv;
 };
 
+int minimax(SearchStats &stats, SearchStack *stack, const Position &pos, const int depth);
 void search(const Position &pos, const SearchOptions options);
 bool legal_pv(const Position &pos, const PV &pv);
 
