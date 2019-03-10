@@ -6,6 +6,9 @@
 #include "position.hpp"
 #include "move.hpp"
 
+#define MAX_DEPTH 128
+#define MATE_SCORE 100000
+
 enum SearchType
 {
     Time = 0,
@@ -39,6 +42,12 @@ struct SearchStats
 };
 
 typedef std::vector<Move> PV;
+
+struct SearchStack
+{
+    int ply = 0;
+    PV pv;
+};
 
 void search(const Position &pos, const SearchOptions options);
 bool legal_pv(const Position &pos, const PV &pv);
