@@ -183,17 +183,17 @@ std::uint64_t double_moves(const int sq)
 // Check if the game is over
 // -- No black stones left
 // -- No white stones left
-// -- No empty spaces left
+// -- No moves left
 bool gameover(const Position &pos)
 {
-    const std::uint64_t empty = Board::All ^ (pos.pieces[Side::Black] |
-                                              pos.pieces[Side::White] |
-                                              pos.gaps);
+    const std::uint64_t pieces = pos.pieces[Side::Black] | pos.pieces[Side::White];
+    const std::uint64_t empty = Board::All ^ (pieces | pos.gaps);
+    const std::uint64_t moves = adjacent(adjacent(pieces));
 
     if(!pos.pieces[Side::Black]) {return true;}
     if(!pos.pieces[Side::White]) {return true;}
-    if(!empty) {return true;}
-    return false;
+    if(moves & empty) {return false;}
+    return true;
 }
 
 std::uint64_t adjacent(const std::uint64_t bb)

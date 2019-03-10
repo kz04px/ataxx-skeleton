@@ -175,13 +175,36 @@ bool test_pv()
     return true;
 }
 
+bool test_gameover()
+{
+    const std::pair<std::string, bool> tests[] = {
+        {"startpos", false},
+        {"7/7/7/7/7/7/7", true},
+        {"7/7/7/7/7/7/x6", true},
+        {"7/7/7/7/7/7/o6", true},
+        {"7/7/7/7/7/7/ox5", false},
+        {"xxxxxxx/xxxxxxx/xxxxxxx/xxxxxxx/xxxxxxx/xxxxxxx/xxxxxxx", true},
+        {"ooooooo/ooooooo/ooooooo/ooooooo/ooooooo/ooooooo/ooooooo", true},
+        {"xxxxxxx/xxxxxxx/xxxxxxx/xxxxxxx/xxxxxxx/xxxxxxx/ooooooo", true},
+        {"ooooooo/ooooooo/ooooooo/ooooooo/ooooooo/ooooooo/xxxxxxx", true}
+    };
+    for(const auto &[fen, expected] : tests)
+    {
+        Position pos;
+        set_fen(pos, fen);
+        if(gameover(pos) != expected) {return false;}
+    }
+    return true;
+}
+
 void test()
 {
 Options::print();
-    std::cout << (test_fen()     ? "Y" : "N") << " -- FEN parsing" << std::endl;
-    std::cout << (test_perft()   ? "Y" : "N") << " -- Perft" << std::endl;
-    std::cout << (test_options() ? "Y" : "N") << " -- Options" << std::endl;
-    std::cout << (test_pv()      ? "Y" : "N") << " -- PV" << std::endl;
+    std::cout << (test_fen()      ? "Y" : "N") << " -- FEN parsing" << std::endl;
+    std::cout << (test_perft()    ? "Y" : "N") << " -- Perft" << std::endl;
+    std::cout << (test_options()  ? "Y" : "N") << " -- Options" << std::endl;
+    std::cout << (test_pv()       ? "Y" : "N") << " -- PV" << std::endl;
+    std::cout << (test_gameover() ? "Y" : "N") << " -- Gameover" << std::endl;
     // UAI
     std::cout << (test_uai_pos()       ? "Y" : "N") << " -- UAI::position" << std::endl;
     std::cout << (test_uai_moves()     ? "Y" : "N") << " -- UAI::moves" << std::endl;
