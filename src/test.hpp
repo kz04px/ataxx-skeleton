@@ -9,6 +9,8 @@
 #include "protocol.hpp"
 #include "search.hpp"
 #include "options.hpp"
+#include "movegen.hpp"
+#include "valid.hpp"
 
 bool test_fen()
 {
@@ -202,13 +204,49 @@ bool test_gameover()
     return true;
 }
 
+bool test_legal_move()
+{
+    const std::string fens[] {
+        "startpos"
+    };
+    for(const auto &fen : fens)
+    {
+        Position pos;
+        set_fen(pos, fen);
+        Move moves[MAX_MOVES];
+        int num_moves = movegen(pos, moves);
+
+        for(int to = 0; to < 49; ++to)
+        {
+            for(int from = 0; from < 49; ++from)
+            {
+                Move move = Move(from, to);
+                bool legal = legal_move(pos, move);
+                bool found = false;
+                for(int i = 0; i < num_moves; ++i)
+                {
+                    if(move == moves[i])
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if(legal != found) {return false;}
+            }
+        }
+    }
+    return true;
+}
+
 void test()
 {
-    std::cout << (test_fen()      ? "Y" : "N") << " -- FEN parsing" << std::endl;
-    std::cout << (test_perft()    ? "Y" : "N") << " -- Perft" << std::endl;
-    std::cout << (test_options()  ? "Y" : "N") << " -- Options" << std::endl;
-    std::cout << (test_pv()       ? "Y" : "N") << " -- PV" << std::endl;
-    std::cout << (test_gameover() ? "Y" : "N") << " -- Gameover" << std::endl;
+    std::cout << (test_fen()        ? "Y" : "N") << " -- FEN parsing" << std::endl;
+    std::cout << (test_perft()      ? "Y" : "N") << " -- Perft" << std::endl;
+    std::cout << (test_options()    ? "Y" : "N") << " -- Options" << std::endl;
+    std::cout << (test_pv()         ? "Y" : "N") << " -- PV" << std::endl;
+    std::cout << (test_gameover()   ? "Y" : "N") << " -- Gameover" << std::endl;
+    std::cout << (test_legal_move() ? "Y" : "N") << " -- Legal move" << std::endl;
     // UAI
     std::cout << (test_uai_pos()       ? "Y" : "N") << " -- UAI::position" << std::endl;
     std::cout << (test_uai_moves()     ? "Y" : "N") << " -- UAI::moves" << std::endl;
