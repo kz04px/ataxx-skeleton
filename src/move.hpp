@@ -6,8 +6,8 @@
 
 enum MoveType : bool
 {
-    SINGLE = 0,
-    DOUBLE
+    Single = 0,
+    Double
 };
 /*
 const char *move_strings[] = {
@@ -35,6 +35,20 @@ struct Move
         return from_ == rhs.from_ && to_ == rhs.to_;
     }
 };
+
+inline int move_type(const Move &move)
+{
+    const int from = move.from();
+    const int to = move.to();
+
+    const int dx = (from%7) - (to%7);
+    if(dx < -1 || dx > 1) {return MoveType::Double;}
+
+    const int dy = (from/7) - (to/7);
+    if(dy < -1 || dy > 1) {return MoveType::Double;}
+
+    return MoveType::Single;
+}
 
 inline std::ostream &operator<<(std::ostream &os, const Move &m)
 {

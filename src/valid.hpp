@@ -56,7 +56,7 @@ inline bool legal_move(const Position &pos, const Move &move)
     if((1ULL << to) & filled) {return false;}
 
     // Single moves
-    if(from == to)
+    if(move_type(move) == MoveType::Single)
     {
         return single_moves(to) & pos.pieces[pos.turn];
     }

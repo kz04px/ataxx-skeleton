@@ -25,6 +25,7 @@ int movegen(const Position &pos, Move *moves)
         assert(num_moves < MAX_MOVES);
         const int to = lsbll(singles);
         moves[num_moves] = Move(to);
+        assert(move_type(moves[num_moves]) == MoveType::Single);
         num_moves++;
         singles &= singles - 1;
     }
@@ -40,6 +41,7 @@ int movegen(const Position &pos, Move *moves)
             assert(num_moves < MAX_MOVES);
             const int to = lsbll(destinations);
             moves[num_moves] = Move(from, to);
+            assert(move_type(moves[num_moves]) == MoveType::Double);
             num_moves++;
             destinations &= destinations - 1;
         }
