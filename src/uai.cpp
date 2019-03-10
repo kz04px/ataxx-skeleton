@@ -310,7 +310,7 @@ namespace UAI
             std::stringstream stream {line};
             stream >> word;
 
-            if(word == "ucinewgame")     {uainewgame(pos);}
+            if(word == "uainewgame")     {uainewgame(pos);}
             else if(word == "isready")   {isready();}
             else if(word == "perft")     {perft(pos, stream);}
             else if(word == "split")     {split(pos, stream);}
