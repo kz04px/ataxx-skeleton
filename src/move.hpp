@@ -18,10 +18,12 @@ const char *move_strings[] = {
 struct Move
 {
     Move() : from_(Square::a1), to_(Square::a1) {}
-    Move(int t) : from_(t), to_(t) {}
+    Move(int t) : from_(t), to_(t)
+    {
+        assert(0 <= t && t <= 48);
+    }
     Move(int f, int t) : from_(f), to_(t)
     {
-        assert(f != t);
         assert(0 <= f && f <= 48);
         assert(0 <= t && t <= 48);
     }
