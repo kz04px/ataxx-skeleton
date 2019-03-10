@@ -29,11 +29,6 @@ struct Move
     int to() const {return to_;}
     int from_ = 0;
     int to_ = 0;
-
-    bool operator==(const Move &rhs)
-    {
-        return from_ == rhs.from_ && to_ == rhs.to_;
-    }
 };
 
 inline int move_type(const Move &move)
@@ -48,6 +43,36 @@ inline int move_type(const Move &move)
     if(dy < -1 || dy > 1) {return MoveType::Double;}
 
     return MoveType::Single;
+}
+
+inline bool operator==(const Move &lhs, const Move &rhs)
+{
+    if(lhs.to() != rhs.to()) {return false;}
+
+    const int ltype = move_type(lhs);
+    const int rtype = move_type(rhs);
+
+    if(ltype == MoveType::Single && rtype == MoveType::Single)
+    {
+        return true;
+    }
+
+    return lhs.from() == rhs.from();
+}
+
+inline bool operator!=(const Move &lhs, const Move &rhs)
+{
+    if(lhs.to() != rhs.to()) {return true;}
+
+    const int ltype = move_type(lhs);
+    const int rtype = move_type(rhs);
+
+    if(ltype == MoveType::Single && rtype == MoveType::Single)
+    {
+        return false;
+    }
+
+    return lhs.from() != rhs.from();
 }
 
 inline std::ostream &operator<<(std::ostream &os, const Move &m)
