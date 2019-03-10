@@ -54,11 +54,16 @@ inline std::ostream &operator<<(std::ostream &os, const Move &m)
 {
     const int from = m.from();
     const int to = m.to();
-    os << static_cast<char>((from%7)+'a')
-       << static_cast<char>((from/7)+'1');
-    if(to != from)
+    if(move_type(m) == MoveType::Single)
     {
         os << static_cast<char>((to%7)+'a')
+           << static_cast<char>((to/7)+'1');
+    }
+    else
+    {
+        os << static_cast<char>((from%7)+'a')
+           << static_cast<char>((from/7)+'1')
+           << static_cast<char>((to%7)+'a')
            << static_cast<char>((to/7)+'1');
     }
     return os;
