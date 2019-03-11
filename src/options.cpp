@@ -84,7 +84,12 @@ namespace Options
                       << " name " << key
                       << " type combo"
                       << " default " << entry.default_
-                      << std::endl;
+                      << " options";
+            for(const auto &str : entry.options_)
+            {
+                std::cout << " " << str;
+            }
+            std::cout << std::endl;
         }
     }
 }

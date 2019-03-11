@@ -122,7 +122,14 @@ bool test_options()
     if(Options::strings["TestString"].get() != "Test2") {return false;}
 
     // Combo
-    // TODO
+    Options::combos["TestCombo"] = Options::Combo("A", {"A", "B", "C"});
+    if(Options::combos["TestCombo"].get() != "A") {return false;}
+    Options::set("TestCombo", "B");
+    if(Options::combos["TestCombo"].get() != "B") {return false;}
+    Options::set("TestCombo", "C");
+    if(Options::combos["TestCombo"].get() != "C") {return false;}
+    Options::set("TestCombo", "D");
+    if(Options::combos["TestCombo"].get() != "C") {return false;}
 
     // Spin -- Multiple word name/value
     Options::strings["Test String"] = Options::String("Test Value");

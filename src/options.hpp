@@ -82,7 +82,9 @@ namespace Options
         Combo()
         {
         }
-        Combo(const std::string &d) : default_(d)
+        Combo(const std::string &d, const std::vector<std::string> &o) :
+            default_(d),
+            options_(o)
         {
             set(d);
         }
