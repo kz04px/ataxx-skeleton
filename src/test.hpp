@@ -223,7 +223,19 @@ bool test_legal_move()
         {
             for(int from = 0; from < 49; ++from)
             {
-                Move move = Move(from, to);
+                int dx = std::abs((to%7) - (from%7));
+                int dy = std::abs((to/7) - (from/7));
+
+                Move move;
+                if(dx < 2 && dy < 2)
+                {
+                    move = Move(to);
+                }
+                else
+                {
+                    move = Move(from, to);
+                }
+
                 bool legal = legal_move(pos, move);
                 bool found = false;
                 for(int i = 0; i < num_moves; ++i)
@@ -242,6 +254,23 @@ bool test_legal_move()
     return true;
 }
 
+bool test_parse_san()
+{
+    const std::vector<std::string> moves = {
+        "b2", "a1b2", "a2b2", "a3b2", "b1b2", "b3b2", "c1b2", "c2b2", "c3b2"
+    };
+    for(unsigned int a = 0; a < moves.size()-1; ++a)
+    {
+        for(unsigned int b = a+1; b < moves.size(); ++b)
+        {
+            const Move move1 = parse_san(moves[a]);
+            const Move move2 = parse_san(moves[b]);
+            if(move1 != move2) {return false;}
+        }
+    }
+    return true;
+}
+
 void test()
 {
     std::cout << (test_fen()        ? "Y" : "N") << " -- FEN parsing" << std::endl;
@@ -250,6 +279,7 @@ void test()
     std::cout << (test_pv()         ? "Y" : "N") << " -- PV" << std::endl;
     std::cout << (test_gameover()   ? "Y" : "N") << " -- Gameover" << std::endl;
     std::cout << (test_legal_move() ? "Y" : "N") << " -- Legal move" << std::endl;
+    std::cout << (test_parse_san()  ? "Y" : "N") << " -- Parse san" << std::endl;
     // UAI
     std::cout << (test_uai_pos()       ? "Y" : "N") << " -- UAI::position" << std::endl;
     std::cout << (test_uai_moves()     ? "Y" : "N") << " -- UAI::moves" << std::endl;

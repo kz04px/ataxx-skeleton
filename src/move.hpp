@@ -24,8 +24,10 @@ struct Move
     }
     Move(int f, int t) : from_(f), to_(t)
     {
+        assert(f != t);
         assert(0 <= f && f <= 48);
         assert(0 <= t && t <= 48);
+        assert(std::abs((t%7) - (f%7)) > 1 || std::abs((t/7) - (f/7)) > 1);
     }
     int from() const {return from_;}
     int to() const {return to_;}
@@ -35,46 +37,18 @@ struct Move
 
 inline int move_type(const Move &move)
 {
-    const int from = move.from();
-    const int to = move.to();
-
-    const int dx = (from%7) - (to%7);
-    if(dx < -1 || dx > 1) {return MoveType::Double;}
-
-    const int dy = (from/7) - (to/7);
-    if(dy < -1 || dy > 1) {return MoveType::Double;}
-
-    return MoveType::Single;
+    if(move.from() == move.to()) {return MoveType::Single;}
+    return MoveType::Double;
 }
 
 inline bool operator==(const Move &lhs, const Move &rhs)
 {
-    if(lhs.to() != rhs.to()) {return false;}
-
-    const int ltype = move_type(lhs);
-    const int rtype = move_type(rhs);
-
-    if(ltype == MoveType::Single && rtype == MoveType::Single)
-    {
-        return true;
-    }
-
-    return lhs.from() == rhs.from();
+    return lhs.to() == rhs.to() && lhs.from() == rhs.from();
 }
 
 inline bool operator!=(const Move &lhs, const Move &rhs)
 {
-    if(lhs.to() != rhs.to()) {return true;}
-
-    const int ltype = move_type(lhs);
-    const int rtype = move_type(rhs);
-
-    if(ltype == MoveType::Single && rtype == MoveType::Single)
-    {
-        return false;
-    }
-
-    return lhs.from() != rhs.from();
+    return lhs.to() != rhs.to() || lhs.from() != rhs.from();
 }
 
 inline std::ostream &operator<<(std::ostream &os, const Move &m)
@@ -115,7 +89,21 @@ inline Move parse_san(const std::string str)
         int x2 = str[2] - 'a';
         int y2 = str[3] - '1';
         int sq2 = 7*y2 + x2;
-        return Move(sq1, sq2);
+
+        int dx = std::abs(x1 - x2);
+        int dy = std::abs(y1 - y2);
+
+        // We were just given a single jump in longhand notation
+        // e.g. "b2b3" instead of "b3"
+        if(dx <= 1 && dy <= 1)
+        {
+            return Move(sq2);
+        }
+        // Normal double jump
+        else
+        {
+            return Move(sq1, sq2);
+        }
     }
     else if(str == "0000")
     {
