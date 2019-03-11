@@ -79,17 +79,33 @@ inline Move parse_san(const std::string str)
         int x = str[0] - 'a';
         int y = str[1] - '1';
         int sq = 7*y + x;
+
+        if(x < 0 || x > 6 || y < 0 || y > 6)
+        {
+            throw std::invalid_argument("Not a move. (" + str + ")");
+        }
+
         return Move(sq);
     }
     else if(str.length() == 4)
     {
         int x1 = str[0] - 'a';
         int y1 = str[1] - '1';
-        int sq1 = 7*y1 + x1;
         int x2 = str[2] - 'a';
         int y2 = str[3] - '1';
-        int sq2 = 7*y2 + x2;
 
+        if(x1 < 0 || x1 > 6 || y1 < 0 || y1 > 6)
+        {
+            throw std::invalid_argument("Invalid move. (" + str + ")");
+        }
+
+        if(x2 < 0 || x2 > 6 || y2 < 0 || y2 > 6)
+        {
+            throw std::invalid_argument("Invalid move. (" + str + ")");
+        }
+
+        int sq1 = 7*y1 + x1;
+        int sq2 = 7*y2 + x2;
         int dx = std::abs(x1 - x2);
         int dy = std::abs(y1 - y2);
 
@@ -109,7 +125,10 @@ inline Move parse_san(const std::string str)
     {
         return Move(Square::a1);
     }
-    return Move(Square::a1);
+    else
+    {
+        throw std::invalid_argument("Invalid length (" + str + ")");
+    }
 }
 
 #endif

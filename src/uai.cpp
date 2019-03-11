@@ -8,6 +8,7 @@
 #include "movegen.hpp"
 #include "makemove.hpp"
 #include "move.hpp"
+#include "valid.hpp"
 
 std::thread search_thread;
 bool search_stop = false;
@@ -65,18 +66,24 @@ namespace UAI
         std::string word = "";
         while(stream >> word)
         {
-            Move parsed_move = parse_san(word);
-
-            // Check the move is legal
-            Move moves[MAX_MOVES];
-            int num_moves = movegen(pos, moves);
-            for(int i = 0; i < num_moves; ++i)
+            Move move;
+            try
             {
-                if(moves[i] == parsed_move)
-                {
-                    makemove(pos, moves[i]);
-                    break;
-                }
+                move = parse_san(word);
+            }
+            catch(...)
+            {
+                std::cout << "Failed to parse move \"" << word << "\""<< std::endl;
+                continue;
+            }
+
+            if(legal_move(pos, move))
+            {
+                makemove(pos, move);
+            }
+            else
+            {
+                std::cout << "Illegal move " << move << std::endl;
             }
         }
     }

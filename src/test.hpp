@@ -268,6 +268,22 @@ bool test_parse_san()
             if(move1 != move2) {return false;}
         }
     }
+
+    const std::vector<std::string> invalid = {
+        "a8", "a0", "h1", "a2d8", "d0g6", "\n", "cat", "cats", "longlonglonglong"
+    };
+    for(const auto &str : invalid)
+    {
+        try
+        {
+            Move move = parse_san(str);
+            return false;
+        }
+        catch(...)
+        {
+        }
+    }
+
     return true;
 }
 
