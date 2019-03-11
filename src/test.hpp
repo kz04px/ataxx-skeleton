@@ -10,7 +10,6 @@
 #include "search.hpp"
 #include "options.hpp"
 #include "movegen.hpp"
-#include "valid.hpp"
 
 bool test_fen()
 {

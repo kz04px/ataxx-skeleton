@@ -8,7 +8,6 @@
 #include "movegen.hpp"
 #include "makemove.hpp"
 #include "move.hpp"
-#include "valid.hpp"
 
 std::thread search_thread;
 bool search_stop = false;

@@ -131,4 +131,29 @@ inline Move parse_san(const std::string str)
     }
 }
 
+// Try to make sure the move is legal with regard for the board
+// illegal -- a1d7
+// illegal -- Placing a stone onto a gap
+// illegal -- Placing a stone onto another stone
+inline bool legal_move(const Position &pos, const Move &move)
+{
+    const int from = move.from();
+    const int to = move.to();
+    const std::uint64_t filled = pos.pieces[Side::Black] | pos.pieces[Side::White] | pos.gaps;
+
+    // Make sure the destination square is empty
+    if((1ULL << to) & filled) {return false;}
+
+    // Single moves
+    if(move_type(move) == MoveType::Single)
+    {
+        return single_moves(to) & pos.pieces[pos.turn];
+    }
+    // Double moves
+    else
+    {
+        return double_moves(to) & pos.pieces[pos.turn] & (1ULL << from);
+    }
+}
+
 #endif

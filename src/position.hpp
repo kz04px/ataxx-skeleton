@@ -61,6 +61,7 @@ std::uint64_t single_moves(const int sq);
 std::uint64_t double_moves(const int sq);
 bool gameover(const Position &pos);
 std::uint64_t adjacent(const std::uint64_t bb);
+bool legal_position(const Position &pos);
 void print(const Position &pos);
 
 #endif

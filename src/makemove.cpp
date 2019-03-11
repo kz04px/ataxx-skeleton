@@ -1,11 +1,10 @@
 #include <cstdint>
 #include "makemove.hpp"
-#include "valid.hpp"
 
 // Apply a move to the position
 void makemove(Position &pos, const Move &move)
 {
-    assert(legal_board(pos));
+    assert(legal_position(pos));
     assert(legal_move(pos, move));
 
     const bool us = pos.turn;
@@ -26,5 +25,5 @@ void makemove(Position &pos, const Move &move)
 
     pos.turn = !pos.turn;
 
-    assert(legal_board(pos));
+    assert(legal_position(pos));
 }

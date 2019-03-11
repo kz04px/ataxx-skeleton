@@ -1,7 +1,6 @@
 #include <iostream>
 #include <cassert>
 #include "movegen.hpp"
-#include "valid.hpp"
 #include "other.hpp"
 
 // Generate all legal moves for the positiono specified
@@ -9,7 +8,7 @@
 int movegen(const Position &pos, Move *moves)
 {
     assert(moves);
-    assert(legal_board(pos));
+    assert(legal_position(pos));
 
     const bool us = pos.turn;
     const bool them = !us;

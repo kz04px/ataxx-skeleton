@@ -176,6 +176,17 @@ std::uint64_t adjacent(const std::uint64_t bb)
                          ((bb>>6) & (Board::NotFileA))); // Down 1 right 1
 }
 
+// Try to make sure the current position is legal
+// -- No overlapping stones
+// -- No stones on gaps
+bool legal_position(const Position &pos)
+{
+    if(pos.pieces[Side::White] & pos.pieces[Side::Black]) {return false;}
+    if(pos.pieces[Side::White] & pos.gaps) {return false;}
+    if(pos.pieces[Side::Black] & pos.gaps) {return false;}
+    return true;
+}
+
 // Prints a simple ascii board to cout
 void print(const Position &pos)
 {
