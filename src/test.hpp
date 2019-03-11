@@ -14,7 +14,10 @@
 bool test_fen()
 {
     const std::string tests[] = {
-        "x5o/7/2-1-2/7/2-1-2/7/o5x b"
+        "x5o/7/2-1-2/7/2-1-2/7/o5x b",
+        "x5o/7/2-1-2/7/2-1-2/7/o5x w",
+        "7/7/7/7/7/7/7 b",
+        "7/7/7/7/7/7/7 w"
     };
     for(const auto &fen : tests)
     {
@@ -31,8 +34,8 @@ bool test_fen()
 bool test_perft()
 {
     const std::pair<std::string, std::vector<std::uint64_t>> tests[] = {
-        {"startpos", {14, 196, 4184, 86528}},
-        {"x5o/7/7/7/7/7/o5x b", {16, 256, 6460, 155888}},
+        {"startpos", {14, 196, 4184, 86528, 2266352}},
+        {"x5o/7/7/7/7/7/o5x b", {16, 256, 6460, 155888, 4752668}},
         {"7/7/7/7/7/7/7 b", {0, 0, 0, 0}}
     };
     for(const auto &[fen, nodes] : tests)
@@ -60,7 +63,8 @@ bool test_uai_pos()
         {"fen x5o/7/2-1-2/7/2-1-2/7/o5x", "x5o/7/2-1-2/7/2-1-2/7/o5x b"},
         {"fen x5o/7/2-1-2/7/2-1-2/7/o5x w", "x5o/7/2-1-2/7/2-1-2/7/o5x w"},
         {"fen x5o/7/2-1-2/7/2-1-2/7/o5x b", "x5o/7/2-1-2/7/2-1-2/7/o5x b"},
-        {"fen x5o/7/2-1-2/7/2-1-2/7/o5x w", "x5o/7/2-1-2/7/2-1-2/7/o5x w"}
+        {"fen x5o/7/2-1-2/7/2-1-2/7/o5x w", "x5o/7/2-1-2/7/2-1-2/7/o5x w"},
+        {"fen x5o/7/2-1-2/7/2-1-2/7/o5x moves g2", "x5o/7/2-1-2/7/2-1-2/6x/o5x w"}
     };
     for(const auto &[input, fen] : tests)
     {
@@ -78,7 +82,8 @@ bool test_uai_pos()
 bool test_uai_moves()
 {
     const std::pair<std::string, std::string> tests[] = {
-        {"g2 a1a3", "x5o/7/2-1-2/7/o1-1-2/6x/6x b"}
+        {"g2 a1a3", "x5o/7/2-1-2/7/o1-1-2/6x/6x b"},
+        {"", "x5o/7/2-1-2/7/2-1-2/7/o5x b"}
     };
     for(const auto &[moves, fen] : tests)
     {
@@ -275,7 +280,7 @@ bool test_parse_san()
     {
         try
         {
-            Move move = parse_san(str);
+            parse_san(str);
             return false;
         }
         catch(...)
