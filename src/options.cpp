@@ -25,13 +25,20 @@ namespace Options
         // Checks
         else if(checks.find(name) != checks.end())
         {
-            if(value == "true" || value == "True")
+            if(value == "true" || value == "True" || value == "on")
             {
                 checks[name].set(true);
             }
-            else
+            else if(value == "false" || value == "False" || value == "off")
             {
                 checks[name].set(false);
+            }
+            else
+            {
+                if(checks["debug"].get())
+                {
+                    std::cout << "info illegal check value \"" << name << "\"" << std::endl;
+                }
             }
         }
         // Strings
@@ -43,6 +50,13 @@ namespace Options
         else if(combos.find(name) != combos.end())
         {
             combos[name].set(value);
+        }
+        else
+        {
+            if(checks["debug"].get())
+            {
+                std::cout << "info option \"" << name << "\" not found" << std::endl;
+            }
         }
     }
 

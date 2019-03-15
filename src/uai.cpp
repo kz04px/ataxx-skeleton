@@ -72,7 +72,10 @@ namespace UAI
             }
             catch(...)
             {
-                std::cout << "Failed to parse move \"" << word << "\""<< std::endl;
+                if(Options::checks["debug"].get())
+                {
+                    std::cout << "info failed to parse move \"" << word << "\"" << std::endl;
+                }
                 continue;
             }
 
@@ -82,7 +85,10 @@ namespace UAI
             }
             else
             {
-                std::cout << "Illegal move " << move << std::endl;
+                if(Options::checks["debug"].get())
+                {
+                    std::cout << "info illegal move \"" << move << "\"" << std::endl;
+                }
             }
         }
     }
@@ -116,6 +122,10 @@ namespace UAI
         }
         else
         {
+            if(Options::checks["debug"].get())
+            {
+                std::cout << "info unknown UAI::position term \"" << word << "\"" << std::endl;
+            }
             return;
         }
 
@@ -234,6 +244,13 @@ namespace UAI
                 options.type = SearchType::Time;
                 stream >> options.movestogo;
             }
+            else
+            {
+                if(Options::checks["debug"].get())
+                {
+                    std::cout << "info unknown UAI::go term \"" << word << "\"" << std::endl;
+                }
+            }
         }
 
         search_thread = std::thread(search, pos, options);
@@ -264,23 +281,8 @@ namespace UAI
         std::cout << "id name AtaxxEngine" << std::endl;
         std::cout << "id author kz04px" << std::endl;
 
-        // Options -- Checks
-        Options::checks["Debug"] = Options::Check(false);
-        Options::checks["Ponder"] = Options::Check(false);
-        Options::checks["OwnBook"] = Options::Check(false);
-        Options::checks["LongNotation"] = Options::Check(false);
-        Options::checks["TTPerft"] = Options::Check(false);
-        Options::checks["CanPass"] = Options::Check(false);
-        // Options -- Spins
-        Options::spins["MultiPV"] = Options::Spin(1, 4, 1);
-        Options::spins["Threads"] = Options::Spin(1, 1, 1);
-        Options::spins["Contempt"] = Options::Spin(-100, 100, 0);
-        Options::spins["MaxMoves"] = Options::Spin(1, 1000, 1000);
-        Options::spins["Hash"] = Options::Spin(1, 1024, 16);
-        // Options -- Strings
-        Options::strings["EGTBpath"] = Options::String("tables.tbl");
-        // Options -- Combos
-        Options::combos["Test"] = Options::Combo("Weow");
+        // Create options
+        Options::checks["debug"] = Options::Check(false);
 
         Options::print();
 
@@ -328,6 +330,13 @@ namespace UAI
             else if(word == "print")     {display(pos);}
             else if(word == "display")   {display(pos);}
             else if(word == "quit")      {break;}
+            else
+            {
+                if(Options::checks["debug"].get())
+                {
+                    std::cout << "info unknown UAI command \"" << word << "\"" << std::endl;
+                }
+            }
         }
 
         stop();
