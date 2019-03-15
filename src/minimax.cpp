@@ -6,11 +6,18 @@
 #include "search.hpp"
 
 // Minimax algorithm (negamax)
-int minimax(SearchStats &stats,
+int minimax(SearchController &controller,
+            SearchStats &stats,
             SearchStack *stack,
             const Position &pos,
             const int depth) {
     assert(stack);
+    assert(controller.stop);
+
+    // Stop if asked
+    if (*controller.stop) {
+        return 0;
+    }
 
     // Update seldepth stats
     stats.seldepth = std::max(stack->ply, stats.seldepth);
@@ -49,7 +56,7 @@ int minimax(SearchStats &stats,
 
         Position npos = pos;
         makemove(npos, moves[i]);
-        int score = -minimax(stats, stack + 1, npos, depth - 1);
+        int score = -minimax(controller, stats, stack + 1, npos, depth - 1);
         if (score > best_score) {
             // Update PV
             stack->pv.clear();

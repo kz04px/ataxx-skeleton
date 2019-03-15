@@ -10,7 +10,7 @@
 #include "search.hpp"
 
 std::thread search_thread;
-bool search_stop = false;
+volatile bool search_stop = false;
 
 namespace UAI {
 // New game started
@@ -227,7 +227,7 @@ void go(const Position &pos, std::stringstream &stream) {
         }
     }
 
-    search_thread = std::thread(search, pos, options);
+    search_thread = std::thread(search, pos, options, &search_stop);
 }
 
 // The move that we were pondering about got played
@@ -240,6 +240,7 @@ void stop() {
     if (search_thread.joinable()) {
         search_thread.join();
     }
+    search_stop = false;
 }
 
 // Communicate with the UAI protocol (Universal Ataxx Interface)

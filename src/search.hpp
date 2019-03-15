@@ -34,6 +34,10 @@ struct SearchOptions {
     int depth = -1;
 };
 
+struct SearchController {
+    volatile bool *stop;
+};
+
 struct SearchStats {
     std::uint64_t nodes = 0ULL;
     std::uint64_t tt_hits = 0ULL;
@@ -49,11 +53,14 @@ struct SearchStack {
     PV pv;
 };
 
-int minimax(SearchStats &stats,
+int minimax(SearchController &controller,
+            SearchStats &stats,
             SearchStack *stack,
             const Position &pos,
             const int depth);
-void search(const Position &pos, const SearchOptions options);
+void search(const Position &pos,
+            const SearchOptions options,
+            volatile bool *stop);
 bool legal_pv(const Position &pos, const PV &pv);
 
 #endif

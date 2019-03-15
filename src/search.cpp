@@ -5,15 +5,33 @@
 #include "options.hpp"
 
 // Perform a search as specified in the options
-void search(const Position &pos, const SearchOptions options) {
-    int depth = MAX_DEPTH;
-    if (options.type == SearchType::Depth) {
-        depth = options.depth;
-    }
+void search(const Position &pos,
+            const SearchOptions options,
+            volatile bool *stop) {
+    assert(stop);
 
+    int depth = MAX_DEPTH;
     PV pv;
+    SearchController controller;
     SearchStats stats;
     SearchStack stack[MAX_DEPTH + 1];
+    controller.stop = stop;
+
+    switch (options.type) {
+        case SearchType::Time:
+            break;
+        case SearchType::Depth:
+            depth = options.depth;
+            break;
+        case SearchType::Nodes:
+            break;
+        case SearchType::Movetime:
+            break;
+        case SearchType::Infinite:
+            break;
+        default:
+            break;
+    }
 
     // Set stack
     for (int i = 0; i < MAX_DEPTH + 1; ++i) {
@@ -23,14 +41,15 @@ void search(const Position &pos, const SearchOptions options) {
     // Iterative deepening
     for (int i = 1; i <= depth; ++i) {
         auto start = std::chrono::high_resolution_clock::now();
-        int score = minimax(stats, stack, pos, i);
+        int score = minimax(controller, stats, stack, pos, i);
         auto finish = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> elapsed = finish - start;
 
         assert(-MATE_SCORE < score && score < MATE_SCORE);
 
-        // TODO:
-        // -- Ignore the result if we stopped early and if i > 1
+        if (i > 1 && *stop) {
+            break;
+        }
 
         // Update our main pv
         pv = stack[0].pv;
