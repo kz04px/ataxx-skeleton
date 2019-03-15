@@ -14,6 +14,7 @@ enum SearchType
     Time = 0,
     Depth,
     Nodes,
+    Movetime,
     Infinite
 };
 
@@ -25,6 +26,8 @@ struct SearchOptions {
     int binc = -1;
     int winc = -1;
     int movestogo = -1;
+    // Movetime search
+    int movetime = -1;
     // Nodes search
     std::uint64_t nodes = -1;
     // Depth search

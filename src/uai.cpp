@@ -198,6 +198,11 @@ void go(const Position &pos, std::stringstream &stream) {
         else if (word == "infinite") {
             options.type = SearchType::Infinite;
         }
+        // Movetime
+        else if (word == "movetime") {
+            options.type = SearchType::Movetime;
+            stream >> options.movetime;
+        }
         // Time search
         else if (word == "btime") {
             options.type = SearchType::Time;
