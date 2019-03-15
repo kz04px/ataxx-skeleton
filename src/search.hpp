@@ -62,7 +62,7 @@ int minimax(SearchController &controller,
             const Position &pos,
             const int depth);
 void search(const Position &pos,
-            const SearchOptions options,
+            const SearchOptions &options,
             volatile bool *stop);
 bool legal_pv(const Position &pos, const PV &pv);
 

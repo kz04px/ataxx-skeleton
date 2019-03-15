@@ -154,7 +154,6 @@ void position(Position &pos, std::stringstream &stream) {
         stream >> word;
     } else if (word == "fen") {
         // Collect fen string
-        std::string value = "";
         while (stream >> word && word != "moves") {
             if (fen != "") {
                 fen += " ";

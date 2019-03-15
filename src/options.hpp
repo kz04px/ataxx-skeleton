@@ -21,7 +21,7 @@ struct Spin {
             value_ = n;
         }
     }
-    int get() {
+    int get() const {
         return value_;
     }
     int min_ = 0;
@@ -34,13 +34,13 @@ struct Spin {
 struct Check {
     Check() {
     }
-    Check(bool d) : default_(d) {
+    explicit Check(bool d) : default_(d) {
         set(d);
     }
     void set(const bool n) {
         value_ = n;
     }
-    bool get() {
+    bool get() const {
         return value_;
     }
     bool value_ = false;
@@ -51,13 +51,13 @@ struct Check {
 struct String {
     String() {
     }
-    String(const std::string &d) : default_(d) {
+    explicit String(const std::string &d) : default_(d) {
         set(d);
     }
     void set(const std::string &n) {
         value_ = n;
     }
-    std::string get() {
+    std::string get() const {
         return value_;
     }
     std::string value_ = "";
@@ -80,7 +80,7 @@ struct Combo {
             }
         }
     }
-    std::string get() {
+    std::string get() const {
         return value_;
     }
     std::string value_ = "";

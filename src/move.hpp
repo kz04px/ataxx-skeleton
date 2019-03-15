@@ -14,7 +14,7 @@ enum MoveType : bool
 struct Move {
     Move() : from_(Square::a1), to_(Square::a1) {
     }
-    Move(int t) : from_(t), to_(t) {
+    explicit Move(int t) : from_(t), to_(t) {
         assert(0 <= t && t <= 48);
     }
     Move(int f, int t) : from_(f), to_(t) {
@@ -66,7 +66,7 @@ inline std::ostream &operator<<(std::ostream &os, const Move &m) {
 
 // Convert a string into a Move
 // eg. "a1b3" ---> Move(Square::a1, Square::b3)
-inline Move parse_san(const std::string str) {
+inline Move parse_san(const std::string &str) {
     if (str.length() == 2) {
         int x = str[0] - 'a';
         int y = str[1] - '1';

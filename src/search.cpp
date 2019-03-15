@@ -6,7 +6,7 @@
 
 // Perform a search as specified in the options
 void search(const Position &pos,
-            const SearchOptions options,
+            const SearchOptions &options,
             volatile bool *stop) {
     assert(stop);
 
