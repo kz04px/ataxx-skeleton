@@ -1,8 +1,8 @@
 #ifndef POSITION_HPP
 #define POSITION_HPP
 
-#include <string>
 #include <cstdint>
+#include <string>
 
 enum Board : std::uint64_t
 {
@@ -36,6 +36,7 @@ enum Side : bool
     White
 };
 
+// clang-format off
 enum Square : int
 {
     a1 = 0, b1, c1, d1, e1, f1, g1,
@@ -46,9 +47,9 @@ enum Square : int
     a6, b6, c6, d6, e6, f6, g6,
     a7, b7, c7, d7, e7, f7, g7
 };
+// clang-format on
 
-struct Position
-{
+struct Position {
     std::uint64_t pieces[2] = {0ULL, 0ULL};
     std::uint64_t gaps = 0ULL;
     std::uint64_t hash = 0ULL;

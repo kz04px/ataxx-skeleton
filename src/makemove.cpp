@@ -1,9 +1,8 @@
-#include <cstdint>
 #include "makemove.hpp"
+#include <cstdint>
 
 // Apply a move to the position
-void makemove(Position &pos, const Move &move)
-{
+void makemove(Position &pos, const Move &move) {
     assert(legal_position(pos));
     assert(legal_move(pos, move));
 

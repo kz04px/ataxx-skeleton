@@ -1,32 +1,36 @@
-#include <limits>
 #include <cassert>
-#include "search.hpp"
-#include "movegen.hpp"
-#include "makemove.hpp"
+#include <limits>
 #include "eval.hpp"
+#include "makemove.hpp"
+#include "movegen.hpp"
+#include "search.hpp"
 
 // Minimax algorithm (negamax)
-int minimax(SearchStats &stats, SearchStack *stack, const Position &pos, const int depth)
-{
+int minimax(SearchStats &stats,
+            SearchStack *stack,
+            const Position &pos,
+            const int depth) {
     assert(stack);
 
     // Update seldepth stats
     stats.seldepth = std::max(stack->ply, stats.seldepth);
 
     // Return mate or draw scores if the game is over
-    if(gameover(pos))
-    {
+    if (gameover(pos)) {
         const int num_us = popcountll(pos.pieces[pos.turn]);
         const int num_them = popcountll(pos.pieces[!pos.turn]);
 
-        if(num_us > num_them) {return MATE_SCORE - stack->ply;}
-        else if(num_us < num_them) {return -MATE_SCORE + stack->ply;}
-        else {return 0;}
+        if (num_us > num_them) {
+            return MATE_SCORE - stack->ply;
+        } else if (num_us < num_them) {
+            return -MATE_SCORE + stack->ply;
+        } else {
+            return 0;
+        }
     }
 
     // Make sure we stop searching
-    if(depth == 0 || stack->ply >= MAX_DEPTH)
-    {
+    if (depth == 0 || stack->ply >= MAX_DEPTH) {
         return eval(pos);
     }
 
@@ -40,19 +44,19 @@ int minimax(SearchStats &stats, SearchStack *stack, const Position &pos, const i
     stats.nodes += num_moves;
 
     // Play every legal move and run negamax on the resulting position
-    for(int i = 0; i < num_moves; ++i)
-    {
-        (stack+1)->pv.clear();
+    for (int i = 0; i < num_moves; ++i) {
+        (stack + 1)->pv.clear();
 
         Position npos = pos;
         makemove(npos, moves[i]);
-        int score = -minimax(stats, stack+1, npos, depth-1);
-        if(score > best_score)
-        {
+        int score = -minimax(stats, stack + 1, npos, depth - 1);
+        if (score > best_score) {
             // Update PV
             stack->pv.clear();
             stack->pv.push_back(moves[i]);
-            stack->pv.insert(stack->pv.begin()+1, (stack+1)->pv.begin(), (stack+1)->pv.end());
+            stack->pv.insert(stack->pv.begin() + 1,
+                             (stack + 1)->pv.begin(),
+                             (stack + 1)->pv.end());
 
             best_score = score;
         }

@@ -2,8 +2,8 @@
 #define MOVEGEN_HPP
 
 #include <vector>
-#include "position.hpp"
 #include "move.hpp"
+#include "position.hpp"
 
 #define MAX_MOVES 256
 

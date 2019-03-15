@@ -3,8 +3,8 @@
 
 #include <cstdint>
 #include <vector>
-#include "position.hpp"
 #include "move.hpp"
+#include "position.hpp"
 
 #define MAX_DEPTH 128
 #define MATE_SCORE 100000
@@ -17,8 +17,7 @@ enum SearchType
     Infinite
 };
 
-struct SearchOptions
-{
+struct SearchOptions {
     int type = SearchType::Time;
     // Time search
     int btime = -1;
@@ -32,8 +31,7 @@ struct SearchOptions
     int depth = -1;
 };
 
-struct SearchStats
-{
+struct SearchStats {
     std::uint64_t nodes = 0ULL;
     std::uint64_t tt_hits = 0ULL;
     std::uint64_t tb_hits = 0ULL;
@@ -43,13 +41,15 @@ struct SearchStats
 
 typedef std::vector<Move> PV;
 
-struct SearchStack
-{
+struct SearchStack {
     int ply = 0;
     PV pv;
 };
 
-int minimax(SearchStats &stats, SearchStack *stack, const Position &pos, const int depth);
+int minimax(SearchStats &stats,
+            SearchStack *stack,
+            const Position &pos,
+            const int depth);
 void search(const Position &pos, const SearchOptions options);
 bool legal_pv(const Position &pos, const PV &pv);
 
