@@ -13,6 +13,60 @@ std::thread search_thread;
 volatile bool search_stop = false;
 
 namespace UAI {
+namespace Extension {
+
+// Perform a perft search
+void perft(const Position &pos, std::stringstream &stream) {
+    int depth = 0;
+    stream >> depth;
+    if (depth < 1) {
+        depth = 1;
+    }
+
+    std::uint64_t nodes = 0ULL;
+    for (int i = 1; i <= depth; ++i) {
+        auto start = std::chrono::high_resolution_clock::now();
+        nodes = perft(pos, i);
+        auto finish = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> elapsed = finish - start;
+
+        std::cout << "info"
+                  << " depth " << i << " nodes " << nodes << " time "
+                  << static_cast<int>(elapsed.count() * 1000) << " nps "
+                  << static_cast<int>(nodes / elapsed.count()) << std::endl;
+    }
+
+    std::cout << "nodes " << nodes << std::endl;
+}
+
+// Perform a split perft
+void split(const Position &pos, std::stringstream &stream) {
+    int depth = 0;
+    stream >> depth;
+    if (depth < 1) {
+        depth = 1;
+    }
+
+    std::uint64_t total_nodes = 0ULL;
+    Move moves[MAX_MOVES];
+    int num_moves = movegen(pos, moves);
+    for (int i = 0; i < num_moves; ++i) {
+        Position npos = pos;
+        makemove(npos, moves[i]);
+        std::uint64_t nodes = perft(npos, depth - 1);
+        total_nodes += nodes;
+
+        std::cout << moves[i] << " " << nodes << std::endl;
+    }
+    std::cout << "nodes " << total_nodes << std::endl;
+}
+
+// Display the board
+void display(const Position &pos) {
+    print(pos);
+}
+}  // namespace Extension
+
 // New game started
 void uainewgame(Position &pos) {
     // TODO:
@@ -123,57 +177,6 @@ void position(Position &pos, std::stringstream &stream) {
     }
 
     moves(pos, stream);
-}
-
-// Perform a perft search
-void perft(const Position &pos, std::stringstream &stream) {
-    int depth = 0;
-    stream >> depth;
-    if (depth < 1) {
-        depth = 1;
-    }
-
-    std::uint64_t nodes = 0ULL;
-    for (int i = 1; i <= depth; ++i) {
-        auto start = std::chrono::high_resolution_clock::now();
-        nodes = perft(pos, i);
-        auto finish = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> elapsed = finish - start;
-
-        std::cout << "info"
-                  << " depth " << i << " nodes " << nodes << " time "
-                  << static_cast<int>(elapsed.count() * 1000) << " nps "
-                  << static_cast<int>(nodes / elapsed.count()) << std::endl;
-    }
-
-    std::cout << "nodes " << nodes << std::endl;
-}
-
-// Perform a split perft
-void split(const Position &pos, std::stringstream &stream) {
-    int depth = 0;
-    stream >> depth;
-    if (depth < 1) {
-        depth = 1;
-    }
-
-    std::uint64_t total_nodes = 0ULL;
-    Move moves[MAX_MOVES];
-    int num_moves = movegen(pos, moves);
-    for (int i = 0; i < num_moves; ++i) {
-        Position npos = pos;
-        makemove(npos, moves[i]);
-        std::uint64_t nodes = perft(npos, depth - 1);
-        total_nodes += nodes;
-
-        std::cout << moves[i] << " " << nodes << std::endl;
-    }
-    std::cout << "nodes " << total_nodes << std::endl;
-}
-
-// Display the board
-void display(const Position &pos) {
-    print(pos);
 }
 
 // Start searching for a best move (threaded)
@@ -293,9 +296,9 @@ void listen() {
         } else if (word == "isready") {
             isready();
         } else if (word == "perft") {
-            perft(pos, stream);
+            Extension::perft(pos, stream);
         } else if (word == "split") {
-            split(pos, stream);
+            Extension::split(pos, stream);
         } else if (word == "position") {
             position(pos, stream);
         } else if (word == "moves") {
@@ -307,9 +310,9 @@ void listen() {
         } else if (word == "stop") {
             stop();
         } else if (word == "print") {
-            display(pos);
+            Extension::display(pos);
         } else if (word == "display") {
-            display(pos);
+            Extension::display(pos);
         } else if (word == "quit") {
             break;
         } else {
