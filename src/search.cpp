@@ -12,10 +12,11 @@ void search(const Position &pos,
 
     int depth = MAX_DEPTH;
     PV pv;
-    SearchController controller;
     SearchStats stats;
     SearchStack stack[MAX_DEPTH + 1];
+    SearchController controller;
     controller.stop = stop;
+    controller.max_nodes = std::numeric_limits<std::uint64_t>::max();
 
     switch (options.type) {
         case SearchType::Time:
@@ -24,6 +25,7 @@ void search(const Position &pos,
             depth = options.depth;
             break;
         case SearchType::Nodes:
+            controller.max_nodes = options.nodes;
             break;
         case SearchType::Movetime:
             break;
@@ -47,7 +49,7 @@ void search(const Position &pos,
 
         assert(-MATE_SCORE < score && score < MATE_SCORE);
 
-        if (i > 1 && *stop) {
+        if (i > 1 && (*stop || stats.nodes >= controller.max_nodes)) {
             break;
         }
 

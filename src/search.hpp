@@ -36,6 +36,7 @@ struct SearchOptions {
 
 struct SearchController {
     volatile bool *stop;
+    std::uint64_t max_nodes;
 };
 
 struct SearchStats {

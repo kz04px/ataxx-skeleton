@@ -15,7 +15,7 @@ int minimax(SearchController &controller,
     assert(controller.stop);
 
     // Stop if asked
-    if (*controller.stop) {
+    if (*controller.stop || stats.nodes >= controller.max_nodes) {
         return 0;
     }
 
