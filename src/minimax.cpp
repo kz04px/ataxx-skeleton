@@ -15,7 +15,12 @@ int minimax(SearchController &controller,
     assert(controller.stop);
 
     // Stop if asked
-    if (*controller.stop || stats.nodes >= controller.max_nodes) {
+    if (*controller.stop) {
+        return 0;
+    } else if (stats.nodes >= controller.max_nodes) {
+        return 0;
+    } else if (std::chrono::high_resolution_clock::now() >
+               controller.end_time) {
         return 0;
     }
 

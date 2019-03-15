@@ -11,16 +11,36 @@ void search(const Position &pos,
     assert(stop);
 
     int depth = MAX_DEPTH;
+    auto start_time = std::chrono::high_resolution_clock::now();
     PV pv;
     SearchStats stats;
     SearchStack stack[MAX_DEPTH + 1];
     SearchController controller;
     controller.stop = stop;
     controller.max_nodes = std::numeric_limits<std::uint64_t>::max();
+    controller.end_time = start_time + std::chrono::hours(1);
 
     switch (options.type) {
-        case SearchType::Time:
+        case SearchType::Time: {
+            int search_time = 0;
+
+            // Calculate time usage
+            if (pos.turn == Side::Black) {
+                search_time = options.btime / 30;
+            } else {
+                search_time = options.wtime / 30;
+            }
+
+            // Minimum time
+            if (search_time < 1) {
+                search_time = 1;
+            }
+            assert(search_time > 0);
+
+            controller.end_time =
+                start_time + std::chrono::milliseconds(search_time);
             break;
+        }
         case SearchType::Depth:
             depth = options.depth;
             break;
@@ -28,6 +48,8 @@ void search(const Position &pos,
             controller.max_nodes = options.nodes;
             break;
         case SearchType::Movetime:
+            controller.end_time =
+                start_time + std::chrono::milliseconds(options.movetime);
             break;
         case SearchType::Infinite:
             break;
@@ -42,14 +64,14 @@ void search(const Position &pos,
 
     // Iterative deepening
     for (int i = 1; i <= depth; ++i) {
-        auto start = std::chrono::high_resolution_clock::now();
         int score = minimax(controller, stats, stack, pos, i);
         auto finish = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> elapsed = finish - start;
 
         assert(-MATE_SCORE < score && score < MATE_SCORE);
 
-        if (i > 1 && (*stop || stats.nodes >= controller.max_nodes)) {
+        if (i > 1 &&
+            (*stop || stats.nodes >= controller.max_nodes ||
+             std::chrono::high_resolution_clock::now() > controller.end_time)) {
             break;
         }
 
@@ -58,6 +80,7 @@ void search(const Position &pos,
         assert(legal_pv(pos, pv));
 
         // Send info string
+        std::chrono::duration<double> elapsed = finish - start_time;
         std::cout << "info"
                   << " score cs " << score << " depth " << i << " seldepth "
                   << stats.seldepth << " time "

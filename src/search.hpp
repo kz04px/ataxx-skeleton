@@ -1,6 +1,7 @@
 #ifndef SEARCH_HPP
 #define SEARCH_HPP
 
+#include <chrono>
 #include <cstdint>
 #include <vector>
 #include "move.hpp"
@@ -37,6 +38,7 @@ struct SearchOptions {
 struct SearchController {
     volatile bool *stop;
     std::uint64_t max_nodes;
+    std::chrono::high_resolution_clock::time_point end_time;
 };
 
 struct SearchStats {
