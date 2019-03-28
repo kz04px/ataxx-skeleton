@@ -21,8 +21,8 @@ struct Move {
         assert(f != t);
         assert(0 <= f && f <= 48);
         assert(0 <= t && t <= 48);
-        assert(std::abs((t % 7) - (f % 7)) > 1 ||
-               std::abs((t / 7) - (f / 7)) > 1);
+        assert(std::abs(sq_to_file(t) - sq_to_file(f)) > 1 ||
+               std::abs(sq_to_rank(t) - sq_to_rank(f)) > 1);
     }
     int from() const {
         return from_;
@@ -53,13 +53,13 @@ inline std::ostream &operator<<(std::ostream &os, const Move &m) {
     const int from = m.from();
     const int to = m.to();
     if (move_type(m) == MoveType::Single) {
-        os << static_cast<char>((to % 7) + 'a')
-           << static_cast<char>((to / 7) + '1');
+        os << static_cast<char>(sq_to_file(to) + 'a')
+           << static_cast<char>(sq_to_rank(to) + '1');
     } else {
-        os << static_cast<char>((from % 7) + 'a')
-           << static_cast<char>((from / 7) + '1')
-           << static_cast<char>((to % 7) + 'a')
-           << static_cast<char>((to / 7) + '1');
+        os << static_cast<char>(sq_to_file(from) + 'a')
+           << static_cast<char>(sq_to_rank(from) + '1')
+           << static_cast<char>(sq_to_file(to) + 'a')
+           << static_cast<char>(sq_to_rank(to) + '1');
     }
     return os;
 }
@@ -123,7 +123,7 @@ inline bool legal_move(const Position &pos, const Move &move) {
         pos.pieces[Side::Black] | pos.pieces[Side::White] | pos.gaps;
 
     // Make sure the destination square is empty
-    if ((1ULL << to) & filled) {
+    if (sq_to_bb(to) & filled) {
         return false;
     }
 
@@ -133,7 +133,7 @@ inline bool legal_move(const Position &pos, const Move &move) {
     }
     // Double moves
     else {
-        return double_moves(to) & pos.pieces[pos.turn] & (1ULL << from);
+        return double_moves(to) & pos.pieces[pos.turn] & sq_to_bb(from);
     }
 }
 

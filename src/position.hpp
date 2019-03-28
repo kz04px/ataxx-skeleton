@@ -1,6 +1,7 @@
 #ifndef POSITION_HPP
 #define POSITION_HPP
 
+#include <cassert>
 #include <cstdint>
 #include <string>
 
@@ -64,5 +65,20 @@ bool gameover(const Position &pos);
 std::uint64_t adjacent(const std::uint64_t bb);
 bool legal_position(const Position &pos);
 void print(const Position &pos);
+inline std::uint64_t sq_to_bb(const int sq) {
+    assert(sq >= 0);
+    assert(sq < 49);
+    return 1ULL << sq;
+}
+inline int sq_to_rank(const int sq) {
+    assert(sq >= 0);
+    assert(sq < 49);
+    return sq / 7;
+}
+inline int sq_to_file(const int sq) {
+    assert(sq >= 0);
+    assert(sq < 49);
+    return sq % 7;
+}
 
 #endif

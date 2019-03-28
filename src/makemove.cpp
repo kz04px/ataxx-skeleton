@@ -10,8 +10,8 @@ void makemove(Position &pos, const Move &move) {
     const bool them = !us;
     const int to = move.to();
     const int from = move.from();
-    const std::uint64_t to_bb = 1ULL << to;
-    const std::uint64_t from_bb = 1ULL << from;
+    const std::uint64_t to_bb = sq_to_bb(to);
+    const std::uint64_t from_bb = sq_to_bb(from);
     const std::uint64_t neighbours = single_moves(to);
     const std::uint64_t captured = neighbours & pos.pieces[them];
 

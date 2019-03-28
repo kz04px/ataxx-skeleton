@@ -58,18 +58,18 @@ void set_fen(Position &pos, const std::string &fen) {
                 case 'X':
                 case 'b':
                 case 'B':
-                    pos.pieces[Side::Black] ^= (1ULL << sq);
+                    pos.pieces[Side::Black] ^= sq_to_bb(sq);
                     sq++;
                     break;
                 case 'o':
                 case 'O':
                 case 'w':
                 case 'W':
-                    pos.pieces[Side::White] ^= (1ULL << sq);
+                    pos.pieces[Side::White] ^= sq_to_bb(sq);
                     sq++;
                     break;
                 case '-':
-                    pos.gaps ^= (1ULL << sq);
+                    pos.gaps ^= sq_to_bb(sq);
                     sq++;
                     break;
                 case '1':
@@ -108,7 +108,7 @@ std::string get_fen(const Position &pos) {
     // Board
     int sq = 42;
     while (sq >= 0) {
-        const std::uint64_t bb = 1ULL << sq;
+        const std::uint64_t bb = sq_to_bb(sq);
 
         if (bb & pos.pieces[Side::Black]) {
             if (empty) {
@@ -132,7 +132,7 @@ std::string get_fen(const Position &pos) {
             empty += 1;
         }
 
-        if (sq % 7 == 6) {
+        if (sq_to_file(sq) == 6) {
             sq -= 14;
             if (empty) {
                 fen += std::to_string(empty);
@@ -220,7 +220,7 @@ bool legal_position(const Position &pos) {
 void print(const Position &pos) {
     int sq = 42;
     while (sq >= 0) {
-        const std::uint64_t bb = 1ULL << sq;
+        const std::uint64_t bb = sq_to_bb(sq);
 
         if (bb & pos.pieces[Side::Black]) {
             std::cout << "x";
@@ -232,7 +232,7 @@ void print(const Position &pos) {
             std::cout << "-";
         }
 
-        if (sq % 7 == 6) {
+        if (sq_to_file(sq) == 6) {
             sq -= 14;
             std::cout << std::endl;
         }

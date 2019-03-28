@@ -233,8 +233,8 @@ bool test_legal_move() {
 
         for (int to = 0; to < 49; ++to) {
             for (int from = 0; from < 49; ++from) {
-                int dx = std::abs((to % 7) - (from % 7));
-                int dy = std::abs((to / 7) - (from / 7));
+                int dx = std::abs(sq_to_file(to) - sq_to_file(from));
+                int dy = std::abs(sq_to_rank(to) - sq_to_rank(from));
 
                 Move move;
                 if (dx < 2 && dy < 2) {
