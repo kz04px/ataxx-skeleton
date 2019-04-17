@@ -295,21 +295,18 @@ bool test_parse_san() {
 }
 
 void test() {
-    std::cout << (test_fen() ? "Y" : "N") << " -- FEN parsing" << std::endl;
-    std::cout << (test_perft() ? "Y" : "N") << " -- Perft" << std::endl;
-    std::cout << (test_options() ? "Y" : "N") << " -- Options" << std::endl;
-    std::cout << (test_pv() ? "Y" : "N") << " -- PV" << std::endl;
-    std::cout << (test_gameover() ? "Y" : "N") << " -- Gameover" << std::endl;
-    std::cout << (test_legal_move() ? "Y" : "N") << " -- Legal move"
-              << std::endl;
-    std::cout << (test_parse_san() ? "Y" : "N") << " -- Parse san" << std::endl;
+    std::cout << std::boolalpha;
+    std::cout << test_fen() << " -- FEN parsing" << std::endl;
+    std::cout << test_perft() << " -- Perft" << std::endl;
+    std::cout << test_options() << " -- Options" << std::endl;
+    std::cout << test_pv() << " -- PV" << std::endl;
+    std::cout << test_gameover() << " -- Gameover" << std::endl;
+    std::cout << test_legal_move() << " -- Legal move" << std::endl;
+    std::cout << test_parse_san() << " -- Parse san" << std::endl;
     // UAI
-    std::cout << (test_uai_pos() ? "Y" : "N") << " -- UAI::position"
-              << std::endl;
-    std::cout << (test_uai_moves() ? "Y" : "N") << " -- UAI::moves"
-              << std::endl;
-    std::cout << (test_uai_setoption() ? "Y" : "N") << " -- UAI::setoption"
-              << std::endl;
+    std::cout << test_uai_pos() << " -- UAI::position" << std::endl;
+    std::cout << test_uai_moves() << " -- UAI::moves" << std::endl;
+    std::cout << test_uai_setoption() << " -- UAI::setoption" << std::endl;
 }
 
 #endif
