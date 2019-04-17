@@ -3,7 +3,7 @@
 #include <iostream>
 #include "other.hpp"
 
-// Generate all legal moves for the positiono specified
+// Generate all legal moves for the position specified
 // At most MAX_MOVES can be generated
 int movegen(const Position &pos, Move *moves) {
     assert(moves);
