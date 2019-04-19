@@ -48,5 +48,36 @@ int movegen(const Position &pos, Move *moves) {
         assert(legal_move(pos, moves[i]));
     }
 
+    assert(count_moves(pos) == num_moves);
+
+    return num_moves;
+}
+
+// Returns the number of legal moves in a position
+// This function does NOT generate any moves
+int count_moves(const Position &pos) {
+    assert(legal_position(pos));
+
+    const bool us = pos.turn;
+    const bool them = !us;
+    const std::uint64_t pieces = pos.pieces[us];
+    const std::uint64_t filled = pos.pieces[us] | pos.pieces[them] | pos.gaps;
+    const std::uint64_t empty = Board::All ^ filled;
+    int num_moves = 0;
+
+    // Single moves
+    const std::uint64_t singles = adjacent(pieces) & empty;
+    num_moves += popcountll(singles);
+
+    // Double moves
+    std::uint64_t copy = pieces;
+    while (copy) {
+        const int from = lsbll(copy);
+        const std::uint64_t destinations = double_moves(from) & empty;
+        num_moves += popcountll(destinations);
+        copy &= copy - 1;
+    }
+
+    assert(num_moves < MAX_MOVES);
     return num_moves;
 }

@@ -6,8 +6,7 @@
 // Count the nodes in the tree from this position to a certain depth
 std::uint64_t perft(const Position &pos, const int depth) {
     if (depth == 1) {
-        Move moves[MAX_MOVES];
-        return movegen(pos, moves);
+        return count_moves(pos);
     } else if (depth <= 0) {
         return 1ULL;
     }

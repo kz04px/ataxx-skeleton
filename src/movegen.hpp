@@ -8,5 +8,6 @@
 #define MAX_MOVES 256
 
 int movegen(const Position &pos, Move *moves);
+int count_moves(const Position &pos);
 
 #endif
