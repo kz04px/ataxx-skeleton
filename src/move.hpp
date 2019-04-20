@@ -2,6 +2,7 @@
 #define MOVE_HPP
 
 #include <cassert>
+#include <cstdint>
 #include <iostream>
 #include "position.hpp"
 
@@ -14,24 +15,24 @@ enum MoveType : bool
 struct Move {
     Move() : from_(Square::a1), to_(Square::a1) {
     }
-    explicit Move(int t) : from_(t), to_(t) {
-        assert(0 <= t && t <= 48);
+    explicit Move(std::uint8_t t) : from_(t), to_(t) {
+        assert(t <= 48);
     }
-    Move(int f, int t) : from_(f), to_(t) {
+    Move(std::uint8_t f, std::uint8_t t) : from_(f), to_(t) {
         assert(f != t);
-        assert(0 <= f && f <= 48);
-        assert(0 <= t && t <= 48);
+        assert(f <= 48);
+        assert(t <= 48);
         assert(std::abs(sq_to_file(t) - sq_to_file(f)) > 1 ||
                std::abs(sq_to_rank(t) - sq_to_rank(f)) > 1);
     }
-    int from() const {
+    std::uint8_t from() const {
         return from_;
     }
-    int to() const {
+    std::uint8_t to() const {
         return to_;
     }
-    int from_ = 0;
-    int to_ = 0;
+    std::uint8_t from_ = 0;
+    std::uint8_t to_ = 0;
 };
 
 inline int move_type(const Move &move) {
