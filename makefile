@@ -31,7 +31,7 @@ debug:
 	$(MAKE) CFLAGS="$(CFLAGS) -fsanitize=address" LFLAGS="$(LFLAGS) -g -fsanitize=address"
 
 release:
-	$(MAKE) CFLAGS="$(CFLAGS) -O3 -flto -DNDEBUG"
+	$(MAKE) CFLAGS="$(CFLAGS) -O3 -flto -march=native -DNDEBUG"
 
 clean:
 	rm -r $(OBJDIR)
