@@ -34,6 +34,12 @@ bool test_perft() {
         {"7/7/7/7/7/7/7 b", {0, 0, 0, 0}},
         {"7/7/7/7/ooooooo/ooooooo/xxxxxxx x", {1, 75, 249}},
         {"7/7/7/7/xxxxxxx/xxxxxxx/ooooooo o", {1, 75, 249}},
+        {"7/7/7/7/7/7/7 x", {0, 0, 0}},
+        {"7/7/7/7/7/7/7 o", {0, 0, 0}},
+        {"7/7/7/7/7/7/6x x", {0, 0, 0}},
+        {"7/7/7/7/7/7/6x o", {0, 0, 0}},
+        {"xxxxxxx/xxxxxxx/xxxxxxx/xxxxxxx/xxxxxxx/xxxxxxx/xxxxxxx", {0, 0, 0}},
+        {"ooooooo/ooooooo/ooooooo/ooooooo/ooooooo/ooooooo/ooooooo", {0, 0, 0}},
     };
     for (const auto &[fen, nodes] : tests) {
         Position pos;

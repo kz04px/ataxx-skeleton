@@ -74,6 +74,10 @@ int movegen(const Position &pos, Move *moves) {
 int count_moves(const Position &pos) {
     assert(legal_position(pos));
 
+    if (gameover(pos)) {
+        return 0;
+    }
+
     const bool us = pos.turn;
     const bool them = !us;
     const std::uint64_t pieces = pos.pieces[us];
@@ -95,7 +99,7 @@ int count_moves(const Position &pos) {
     }
 
     // Nullmove
-    if (num_moves == 0 && !gameover(pos)) {
+    if (num_moves == 0) {
         num_moves++;
     }
 
