@@ -121,8 +121,8 @@ void moves(Position &pos, std::stringstream &stream) {
             move = parse_san(word);
         } catch (...) {
             if (Options::checks["debug"].get()) {
-                std::cout << "info failed to parse move \"" << word << "\""
-                          << std::endl;
+                std::cout << "info string failed to parse move \"" << word
+                          << "\"" << std::endl;
             }
             continue;
         }
@@ -131,7 +131,7 @@ void moves(Position &pos, std::stringstream &stream) {
             makemove(pos, move);
         } else {
             if (Options::checks["debug"].get()) {
-                std::cout << "info illegal move \"" << move << "\""
+                std::cout << "info string illegal move \"" << move << "\""
                           << std::endl;
             }
         }
