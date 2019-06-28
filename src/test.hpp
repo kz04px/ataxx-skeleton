@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include "makemove.hpp"
 #include "movegen.hpp"
 #include "options.hpp"
 #include "perft.hpp"
@@ -30,7 +31,10 @@ bool test_perft() {
     const std::pair<std::string, std::vector<std::uint64_t>> tests[] = {
         {"startpos", {14, 196, 4184, 86528, 2266352}},
         {"x5o/7/7/7/7/7/o5x b", {16, 256, 6460, 155888, 4752668}},
-        {"7/7/7/7/7/7/7 b", {0, 0, 0, 0}}};
+        {"7/7/7/7/7/7/7 b", {0, 0, 0, 0}},
+        {"7/7/7/7/ooooooo/ooooooo/xxxxxxx x", {1, 75, 249}},
+        {"7/7/7/7/xxxxxxx/xxxxxxx/ooooooo o", {1, 75, 249}},
+    };
     for (const auto &[fen, nodes] : tests) {
         Position pos;
         set_fen(pos, fen);
@@ -219,6 +223,14 @@ bool test_gameover() {
         if (gameover(pos) != expected) {
             return false;
         }
+
+        if (expected) {
+            Move moves[MAX_MOVES];
+            const int num_moves = movegen(pos, moves);
+            if (num_moves != 0) {
+                return false;
+            }
+        }
     }
     return true;
 }
@@ -274,6 +286,13 @@ bool test_parse_san() {
         }
     }
 
+    // Null move
+    try {
+        const auto move = parse_san("0000");
+    } catch (...) {
+        return false;
+    }
+
     const std::vector<std::string> invalid = {"a8",
                                               "a0",
                                               "h1",
@@ -294,6 +313,52 @@ bool test_parse_san() {
     return true;
 }
 
+bool test_nullmove() {
+    // Nullmove legality
+    const std::pair<std::string, bool> tests[] = {
+        {"startpos", false},
+        {"7/7/7/7/7/7/7 x", false},
+        {"7/7/7/7/7/7/7 o", false},
+        {"7/7/7/7/xxxxxxx/xxxxxxx/ooooooo x", false},
+        {"7/7/7/7/xxxxxxx/xxxxxxx/ooooooo o", true},
+        {"7/7/7/7/ooooooo/ooooooo/xxxxxxx x", true},
+        {"7/7/7/7/ooooooo/ooooooo/xxxxxxx o", false},
+        {"ooooooo/ooooooo/ooooooo/xxxxxxx/xxxxxxx/xxxxxxx/xxxxxxx x", false},
+        {"ooooooo/ooooooo/ooooooo/xxxxxxx/xxxxxxx/xxxxxxx/xxxxxxx o", false},
+    };
+
+    for (const auto &[fen, legal] : tests) {
+        Position pos;
+        set_fen(pos, fen);
+
+        // Does can_move() work?
+        if (legal && can_move(pos)) {
+            return false;
+        }
+
+        // Is nullmove legal?
+        if (legal_move(pos, nullmove) != legal) {
+            return false;
+        }
+
+        // Does movegen return a nullmove?
+        if (legal) {
+            Move moves[MAX_MOVES];
+            const int num_moves = movegen(pos, moves);
+            if (num_moves != 1 || moves[0] != nullmove) {
+                return false;
+            }
+        }
+    }
+
+    // Nullmove equality
+    if (nullmove != parse_san("0000")) {
+        return false;
+    }
+
+    return true;
+}
+
 void test() {
     std::cout << std::boolalpha;
     std::cout << test_fen() << " -- FEN parsing" << std::endl;
@@ -303,6 +368,7 @@ void test() {
     std::cout << test_gameover() << " -- Gameover" << std::endl;
     std::cout << test_legal_move() << " -- Legal move" << std::endl;
     std::cout << test_parse_san() << " -- Parse san" << std::endl;
+    std::cout << test_nullmove() << " -- Null move" << std::endl;
     // UAI
     std::cout << test_uai_pos() << " -- UAI::position" << std::endl;
     std::cout << test_uai_moves() << " -- UAI::moves" << std::endl;

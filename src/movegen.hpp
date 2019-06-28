@@ -2,10 +2,11 @@
 #define MOVEGEN_HPP
 
 #include <vector>
-#include "move.hpp"
-#include "position.hpp"
 
 #define MAX_MOVES 256
+
+struct Move;
+struct Position;
 
 int movegen(const Position &pos, Move *moves);
 int count_moves(const Position &pos);

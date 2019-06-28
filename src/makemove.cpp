@@ -6,6 +6,12 @@ void makemove(Position &pos, const Move &move) {
     assert(legal_position(pos));
     assert(legal_move(pos, move));
 
+    if (move == nullmove) {
+        pos.turn = !pos.turn;
+        assert(legal_position(pos));
+        return;
+    }
+
     const bool us = pos.turn;
     const bool them = !us;
     const int to = move.to();

@@ -16,7 +16,7 @@ struct Move {
     Move() : from_(Square::a1), to_(Square::a1) {
     }
     explicit Move(std::uint8_t t) : from_(t), to_(t) {
-        assert(t <= 48);
+        assert(t <= 48 || t == Square::None);
     }
     Move(std::uint8_t f, std::uint8_t t) : from_(f), to_(t) {
         assert(f != t);
@@ -34,6 +34,8 @@ struct Move {
     std::uint8_t from_ = 0;
     std::uint8_t to_ = 0;
 };
+
+static const Move nullmove = Move{Square::None};
 
 inline int move_type(const Move &move) {
     if (move.from() == move.to()) {
@@ -53,7 +55,9 @@ inline bool operator!=(const Move &lhs, const Move &rhs) {
 inline std::ostream &operator<<(std::ostream &os, const Move &m) {
     const int from = m.from();
     const int to = m.to();
-    if (move_type(m) == MoveType::Single) {
+    if (m == nullmove) {
+        os << "0000";
+    } else if (move_type(m) == MoveType::Single) {
         os << static_cast<char>(sq_to_file(to) + 'a')
            << static_cast<char>(sq_to_rank(to) + '1');
     } else {
@@ -68,7 +72,9 @@ inline std::ostream &operator<<(std::ostream &os, const Move &m) {
 // Convert a string into a Move
 // eg. "a1b3" ---> Move(Square::a1, Square::b3)
 inline Move parse_san(const std::string &str) {
-    if (str.length() == 2) {
+    if (str == "0000" || str == "null") {
+        return Move(Square::None);
+    } else if (str.length() == 2) {
         int x = str[0] - 'a';
         int y = str[1] - '1';
         int sq = 7 * y + x;
@@ -106,8 +112,6 @@ inline Move parse_san(const std::string &str) {
         else {
             return Move(sq1, sq2);
         }
-    } else if (str == "0000") {
-        return Move(Square::a1);
     } else {
         throw std::invalid_argument("Invalid length (" + str + ")");
     }
@@ -118,6 +122,10 @@ inline Move parse_san(const std::string &str) {
 // illegal -- Placing a stone onto a gap
 // illegal -- Placing a stone onto another stone
 inline bool legal_move(const Position &pos, const Move &move) {
+    if (move == nullmove) {
+        return !can_move(pos) && !gameover(pos);
+    }
+
     const int from = move.from();
     const int to = move.to();
     const std::uint64_t filled =

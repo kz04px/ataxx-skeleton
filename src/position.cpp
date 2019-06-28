@@ -189,6 +189,15 @@ bool gameover(const Position &pos) {
     return true;
 }
 
+bool can_move(const Position &pos) {
+    const std::uint64_t pieces =
+        pos.pieces[Side::Black] | pos.pieces[Side::White];
+    const std::uint64_t empty = Board::All ^ (pieces | pos.gaps);
+    const std::uint64_t moves = adjacent(adjacent(pos.pieces[pos.turn]));
+
+    return moves & empty;
+}
+
 std::uint64_t adjacent(const std::uint64_t bb) {
     return Board::All & (((bb >> 1) & (Board::NotFileG)) |  // Left 1
                          ((bb << 1) & (Board::NotFileA)) |  // Right 1

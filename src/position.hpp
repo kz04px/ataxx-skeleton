@@ -46,7 +46,7 @@ enum Square : int
     a4, b4, c4, d4, e4, f4, g4,
     a5, b5, c5, d5, e5, f5, g5,
     a6, b6, c6, d6, e6, f6, g6,
-    a7, b7, c7, d7, e7, f7, g7
+    a7, b7, c7, d7, e7, f7, g7, None
 };
 // clang-format on
 
@@ -62,6 +62,7 @@ std::string get_fen(const Position &pos);
 std::uint64_t single_moves(const int sq);
 std::uint64_t double_moves(const int sq);
 bool gameover(const Position &pos);
+bool can_move(const Position &pos);
 std::uint64_t adjacent(const std::uint64_t bb);
 bool legal_position(const Position &pos);
 void print(const Position &pos);
