@@ -4,6 +4,9 @@
 #include "test.hpp"
 
 int main() {
+    std::setbuf(stdin, NULL);
+    std::setbuf(stdout, NULL);
+
     std::string input;
     std::cin >> input;
 
