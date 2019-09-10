@@ -1,25 +1,33 @@
 CC         = g++
-CFLAGS     = -std=c++17 -Wall -Wextra
+CFLAGS     = -std=c++17 -Wall -Wextra -Wshadow
+RFLAGS     = -O3 -flto -march=native -DNDEBUG
+DFLAGS     = -g
 
 LINKER     = g++ -o
-LFLAGS     = -pthread
+LFLAGS     = -pthread -no-pie
 
 TARGET     = main
 SRCDIR     = src
 OBJDIR     = obj
 BINDIR     = bin
 
-SOURCES  := $(wildcard $(SRCDIR)/*.cpp)
-INCLUDES := $(wildcard $(SRCDIR)/*.hpp)
-OBJECTS  := $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
+SOURCES := $(shell find $(SRCDIR) -type f -name *.cpp)
+OBJECTS := $(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(SOURCES:.cpp=.o))
 
 $(BINDIR)/$(TARGET): $(BINDIR) $(OBJDIR) $(OBJECTS)
+	@echo "Linking "$<
 	@$(LINKER) $@ $(OBJECTS) $(LFLAGS)
-	@echo "Linking complete!"
 
 $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
+	@mkdir -p $(@D)
+	@echo "Compiling "$<
 	@$(CC) $(CFLAGS) -c $< -o $@
-	@echo "Compiled "$<" successfully!"
+
+release:
+	$(MAKE) CFLAGS="$(CFLAGS) $(RFLAGS)"
+
+debug:
+	$(MAKE) CFLAGS="$(CFLAGS) $(DFLAGS)" TARGET="$(TARGET)-debug"
 
 bin:
 	mkdir -p $(BINDIR)
@@ -27,13 +35,7 @@ bin:
 obj:
 	mkdir -p $(OBJDIR)
 
-debug:
-	$(MAKE) CFLAGS="$(CFLAGS) -fsanitize=address" LFLAGS="$(LFLAGS) -g -fsanitize=address"
-
-release:
-	$(MAKE) CFLAGS="$(CFLAGS) -O3 -flto -march=native -DNDEBUG"
-
 clean:
-	rm -r $(OBJDIR)
+	rm -r $(OBJDIR) $(BINDIR)/$(TARGET) $(BINDIR)/$(TARGET)-debug
 
 .PHONY: clean
