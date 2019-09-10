@@ -1,6 +1,5 @@
 #include "movegen.hpp"
 #include <cassert>
-#include <iostream>
 #include "move.hpp"
 #include "other.hpp"
 #include "position.hpp"
@@ -57,10 +56,6 @@ int movegen(const Position &pos, Move *moves) {
     }
 
     for (int i = 0; i < num_moves; ++i) {
-        if (!legal_move(pos, moves[i])) {
-            print(pos);
-            std::cout << "Move: " << moves[i] << std::endl;
-        }
         assert(legal_move(pos, moves[i]));
     }
 
