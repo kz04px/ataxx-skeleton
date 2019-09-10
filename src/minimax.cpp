@@ -50,7 +50,7 @@ int minimax(SearchController &controller,
 
     // Move generation
     Move moves[MAX_MOVES];
-    int num_moves = movegen(pos, moves);
+    const int num_moves = movegen(pos, moves);
 
     // Keeping track of the node count
     stats.nodes += num_moves;

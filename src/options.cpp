@@ -11,7 +11,7 @@ void set(const std::string &name, const std::string &value) {
     // Spins
     if (spins.find(name) != spins.end()) {
         try {
-            int n = std::stoi(value);
+            const int n = std::stoi(value);
             spins[name].set(n);
         } catch (...) {
         }

@@ -247,7 +247,7 @@ bool test_legal_move() {
         Position pos;
         set_fen(pos, fen);
         Move moves[MAX_MOVES];
-        int num_moves = movegen(pos, moves);
+        const int num_moves = movegen(pos, moves);
 
         for (int to = 0; to < 49; ++to) {
             for (int from = 0; from < 49; ++from) {
@@ -261,7 +261,7 @@ bool test_legal_move() {
                     move = Move(from, to);
                 }
 
-                bool legal = legal_move(pos, move);
+                const bool legal = legal_move(pos, move);
                 bool found = false;
                 for (int i = 0; i < num_moves; ++i) {
                     if (move == moves[i]) {

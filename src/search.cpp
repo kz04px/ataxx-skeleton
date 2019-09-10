@@ -11,7 +11,7 @@ void search(const Position &pos,
     assert(stop);
 
     int depth = MAX_DEPTH;
-    auto start_time = std::chrono::high_resolution_clock::now();
+    const auto start_time = std::chrono::high_resolution_clock::now();
     PV pv;
     SearchStats stats;
     SearchStack stack[MAX_DEPTH + 1];

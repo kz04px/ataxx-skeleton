@@ -25,9 +25,9 @@ void perft(const Position &pos, std::stringstream &stream) {
 
     std::uint64_t nodes = 0ULL;
     for (int i = 1; i <= depth; ++i) {
-        auto start = std::chrono::high_resolution_clock::now();
+        const auto start = std::chrono::high_resolution_clock::now();
         nodes = perft(pos, i);
-        auto finish = std::chrono::high_resolution_clock::now();
+        const auto finish = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> elapsed = finish - start;
 
         std::cout << "info"
@@ -49,7 +49,7 @@ void split(const Position &pos, std::stringstream &stream) {
 
     std::uint64_t total_nodes = 0ULL;
     Move moves[MAX_MOVES];
-    int num_moves = movegen(pos, moves);
+    const int num_moves = movegen(pos, moves);
     for (int i = 0; i < num_moves; ++i) {
         Position npos = pos;
         makemove(npos, moves[i]);
