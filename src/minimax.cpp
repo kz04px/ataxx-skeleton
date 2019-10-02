@@ -1,15 +1,14 @@
 #include <cassert>
+#include <libataxx/position.hpp>
 #include <limits>
 #include "eval.hpp"
-#include "makemove.hpp"
-#include "movegen.hpp"
 #include "search.hpp"
 
 // Minimax algorithm (negamax)
 int minimax(SearchController &controller,
             SearchStats &stats,
             SearchStack *stack,
-            const Position &pos,
+            const libataxx::Position &pos,
             const int depth) {
     assert(stack);
     assert(controller.stop);
@@ -28,9 +27,9 @@ int minimax(SearchController &controller,
     stats.seldepth = std::max(stack->ply, stats.seldepth);
 
     // Return mate or draw scores if the game is over
-    if (gameover(pos)) {
-        const int num_us = popcountll(pos.pieces[pos.turn]);
-        const int num_them = popcountll(pos.pieces[!pos.turn]);
+    if (pos.gameover()) {
+        const int num_us = pos.us().count();
+        const int num_them = pos.them().count();
 
         if (num_us > num_them) {
             return MATE_SCORE - stack->ply;
@@ -49,8 +48,8 @@ int minimax(SearchController &controller,
     int best_score = std::numeric_limits<int>::min();
 
     // Move generation
-    Move moves[MAX_MOVES];
-    const int num_moves = movegen(pos, moves);
+    libataxx::Move moves[libataxx::max_moves];
+    const int num_moves = pos.legal_moves(moves);
 
     // Keeping track of the node count
     stats.nodes += num_moves;
@@ -59,9 +58,11 @@ int minimax(SearchController &controller,
     for (int i = 0; i < num_moves; ++i) {
         (stack + 1)->pv.clear();
 
-        Position npos = pos;
-        makemove(npos, moves[i]);
-        int score = -minimax(controller, stats, stack + 1, npos, depth - 1);
+        libataxx::Position npos = pos;
+        npos.makemove(moves[i]);
+        const int score =
+            -minimax(controller, stats, stack + 1, npos, depth - 1);
+
         if (score > best_score) {
             // Update PV
             stack->pv.clear();

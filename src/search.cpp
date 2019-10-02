@@ -1,11 +1,10 @@
 #include "search.hpp"
 #include <chrono>
 #include <iostream>
-#include "makemove.hpp"
 #include "options.hpp"
 
 // Perform a search as specified in the options
-void search(const Position &pos,
+void search(const libataxx::Position &pos,
             const SearchOptions &options,
             volatile bool *stop) {
     assert(stop);
@@ -25,7 +24,7 @@ void search(const Position &pos,
             int search_time = 0;
 
             // Calculate time usage
-            if (pos.turn == Side::Black) {
+            if (pos.turn() == libataxx::Side::Black) {
                 search_time = options.btime / 30;
             } else {
                 search_time = options.wtime / 30;
@@ -64,7 +63,7 @@ void search(const Position &pos,
 
     // Iterative deepening
     for (int i = 1; i <= depth; ++i) {
-        int score = minimax(controller, stats, stack, pos, i);
+        const int score = minimax(controller, stats, stack, pos, i);
         auto finish = std::chrono::high_resolution_clock::now();
 
         assert(-MATE_SCORE < score && score < MATE_SCORE);
@@ -112,13 +111,13 @@ void search(const Position &pos,
 }
 
 // Check the legality of a PV based on a given board
-bool legal_pv(const Position &pos, const PV &pv) {
-    Position npos = pos;
+bool legal_pv(const libataxx::Position &pos, const PV &pv) {
+    libataxx::Position npos = pos;
     for (const auto &move : pv) {
-        if (!legal_move(npos, move)) {
+        if (!npos.legal_move(move)) {
             return false;
         }
-        makemove(npos, move);
+        npos.makemove(move);
     }
     return true;
 }

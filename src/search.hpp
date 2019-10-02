@@ -3,9 +3,9 @@
 
 #include <chrono>
 #include <cstdint>
+#include <libataxx/move.hpp>
+#include <libataxx/position.hpp>
 #include <vector>
-#include "move.hpp"
-#include "position.hpp"
 
 #define MAX_DEPTH 128
 #define MATE_SCORE 100000
@@ -49,7 +49,7 @@ struct SearchStats {
     int seldepth = 0;
 };
 
-typedef std::vector<Move> PV;
+typedef std::vector<libataxx::Move> PV;
 
 struct SearchStack {
     int ply = 0;
@@ -59,11 +59,11 @@ struct SearchStack {
 int minimax(SearchController &controller,
             SearchStats &stats,
             SearchStack *stack,
-            const Position &pos,
+            const libataxx::Position &pos,
             const int depth);
-void search(const Position &pos,
+void search(const libataxx::Position &pos,
             const SearchOptions &options,
             volatile bool *stop);
-bool legal_pv(const Position &pos, const PV &pv);
+bool legal_pv(const libataxx::Position &pos, const PV &pv);
 
 #endif

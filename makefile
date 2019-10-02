@@ -2,9 +2,10 @@ CC         = g++
 CFLAGS     = -std=c++17 -Wall -Wextra -Wshadow
 RFLAGS     = -O3 -flto -march=native -DNDEBUG
 DFLAGS     = -g
+INC        = -I./libs/libataxx/src
 
-LINKER     = g++ -o
-LFLAGS     = -pthread -no-pie
+LINKER     = g++
+LFLAGS     = -L./libs/libataxx/build/static/ -pthread -lataxx -O3 -flto
 
 TARGET     = main
 SRCDIR     = src
@@ -16,12 +17,12 @@ OBJECTS := $(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(SOURCES:.cpp=.o))
 
 $(BINDIR)/$(TARGET): $(BINDIR) $(OBJDIR) $(OBJECTS)
 	@echo "Linking "$<
-	@$(LINKER) $@ $(OBJECTS) $(LFLAGS)
+	@$(LINKER) -o $@ $(OBJECTS) $(LFLAGS)
 
 $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
 	@mkdir -p $(@D)
 	@echo "Compiling "$<
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 release:
 	$(MAKE) CFLAGS="$(CFLAGS) $(RFLAGS)"

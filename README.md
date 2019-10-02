@@ -1,6 +1,6 @@
 
 ### About
-Skeleton code for an Ataxx engine written in C++. All the basic requirements for an engine are included, such as move generation and FEN parsing. A basic [minimax](https://en.wikipedia.org/wiki/Negamax) search and material only evaluation are also provided as examples. This project is intended to provide a solid foundation for others to build their own engines from.
+Skeleton code for an Ataxx engine written in C++. All the basic requirements for an engine are included. A basic [minimax](https://en.wikipedia.org/wiki/Negamax) search and material only evaluation are also provided as examples. This project is intended to provide a solid foundation for others to build their own engines from.
 
 ---
 ### About the game
@@ -10,9 +10,11 @@ Ataxx is a two player, turn-based, perfect information board game created in 198
 ---
 ### Build instructions
 ```bash
-git clone https://github.com/kz04px/ataxx-skeleton
-cd ./ataxx-skeleton
+git clone --recurse-submodules https://github.com/kz04px/ataxx-skeleton
+cd ./ataxx-skeleton/libs/libataxx
 make
+cd ../../
+make release
 ```
 
 ---
@@ -22,15 +24,12 @@ The only differences are that instances of 'c' for 'chess' have been replaced by
 
 ---
 ### FEN strings
-"x" are player one's pieces. "o" are player two's pieces. Numbers represent the number of empty squares. Dashes represent blocked squares. The final character shows the current side to play.<br/>
+"x" are player one's pieces. "o" are player two's pieces. Numbers represent the number of empty squares. Dashes represent blocked squares. The final character shows the current side to play. The final number represents the halfmove clock.<br/>
 Examples:
->x5o/7/7/7/7/7/o5x x</br>
-x5o/7/2-1-2/7/2-1-2/7/o5x x
-
----
-### Ataxx tools
-Some potentially useful python scripts for Ataxx engine development, among other things, can be found here:
-[Ataxx tools](https://github.com/kz04px/ataxx-tools)
+```
+x5o/7/7/7/7/7/o5x x 0
+x5o/7/2-1-2/7/2-1-2/7/o5x x 0
+```
 
 ---
 ### Portability
@@ -38,18 +37,21 @@ Should work on both Windows and Linux, however, this has not been thoroughly tes
 
 ---
 ### Example UAI usage
->uai</br>
-id name AtaxxEngine</br>
-id author kz04px</br>
-option name debug type check default false</br>
-uaiok</br>
-isready</br>
-readyok</br>
-go depth 5</br>
-info score cs 100 depth 1 seldepth 1 time 0 nodes 14 nps 335530 pv f1</br>
-info score cs 0 depth 2 seldepth 2 time 0 nodes 224 nps 1674065 pv f1 b1</br>
-info score cs 100 depth 3 seldepth 3 time 1 nodes 4618 nps 4187051 pv f1 b1 e1</br>
-info score cs 0 depth 4 seldepth 4 time 22 nodes 95540 nps 4232042 pv f1 b1 f2 c1</br>
-info score cs 100 depth 5 seldepth 5 time 532 nodes 2452814 nps 4607308 pv f1 a2 e1 a3 d1</br>
-bestmove f1</br>
+```
+uai
+id name AtaxxEngine
+id author kz04px
+option name debug type check default false
+uaiok
+isready
+readyok
+position startpos
+go depth 5
+info score cs 100 depth 1 seldepth 1 time 0 nodes 14 nps 335530 pv f1
+info score cs 0 depth 2 seldepth 2 time 0 nodes 224 nps 1674065 pv f1 b1
+info score cs 100 depth 3 seldepth 3 time 1 nodes 4618 nps 4187051 pv f1 b1 e1
+info score cs 0 depth 4 seldepth 4 time 22 nodes 95540 nps 4232042 pv f1 b1 f2 c1
+info score cs 100 depth 5 seldepth 5 time 532 nodes 2452814 nps 4607308 pv f1 a2 e1 a3 d1
+bestmove f1
 quit
+```

@@ -5,6 +5,7 @@
 #include <vector>
 
 namespace Options {
+
 // Integer value between min and max
 struct Spin {
     Spin() {
@@ -95,6 +96,7 @@ extern std::unordered_map<std::string, Combo> combos;
 
 void set(const std::string &name, const std::string &value);
 void print();
+
 }  // namespace Options
 
 #endif

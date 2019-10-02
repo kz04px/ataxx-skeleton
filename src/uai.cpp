@@ -1,11 +1,8 @@
 #include <chrono>
 #include <iostream>
+#include <libataxx/position.hpp>
 #include <thread>
-#include "makemove.hpp"
-#include "move.hpp"
-#include "movegen.hpp"
 #include "options.hpp"
-#include "perft.hpp"
 #include "protocol.hpp"
 #include "search.hpp"
 
@@ -13,10 +10,11 @@ std::thread search_thread;
 volatile bool search_stop = false;
 
 namespace UAI {
+
 namespace Extension {
 
 // Perform a perft search
-void perft(const Position &pos, std::stringstream &stream) {
+void perft(const libataxx::Position &pos, std::stringstream &stream) {
     int depth = 0;
     stream >> depth;
     if (depth < 1) {
@@ -26,7 +24,7 @@ void perft(const Position &pos, std::stringstream &stream) {
     std::uint64_t nodes = 0ULL;
     for (int i = 1; i <= depth; ++i) {
         const auto start = std::chrono::high_resolution_clock::now();
-        nodes = perft(pos, i);
+        nodes = pos.perft(i);
         const auto finish = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> elapsed = finish - start;
 
@@ -40,7 +38,7 @@ void perft(const Position &pos, std::stringstream &stream) {
 }
 
 // Perform a split perft
-void split(const Position &pos, std::stringstream &stream) {
+void split(const libataxx::Position &pos, std::stringstream &stream) {
     int depth = 0;
     stream >> depth;
     if (depth < 1) {
@@ -48,12 +46,14 @@ void split(const Position &pos, std::stringstream &stream) {
     }
 
     std::uint64_t total_nodes = 0ULL;
-    Move moves[MAX_MOVES];
-    const int num_moves = movegen(pos, moves);
+    libataxx::Move moves[libataxx::max_moves];
+    const int num_moves = pos.legal_moves(moves);
+
     for (int i = 0; i < num_moves; ++i) {
-        Position npos = pos;
-        makemove(npos, moves[i]);
-        std::uint64_t nodes = perft(npos, depth - 1);
+        libataxx::Position npos = pos;
+        npos.makemove(moves[i]);
+
+        const std::uint64_t nodes = npos.perft(depth - 1);
         total_nodes += nodes;
 
         std::cout << moves[i] << " " << nodes << std::endl;
@@ -62,16 +62,17 @@ void split(const Position &pos, std::stringstream &stream) {
 }
 
 // Display the board
-void display(const Position &pos) {
-    print(pos);
+void display(const libataxx::Position &pos) {
+    std::cout << pos << std::endl;
 }
+
 }  // namespace Extension
 
 // New game started
-void uainewgame(Position &pos) {
+void uainewgame(libataxx::Position &pos) {
     // TODO:
     // -- Clear TT
-    set_fen(pos, "startpos");
+    pos.set_fen("startpos");
 }
 
 // Say that we're ready
@@ -113,12 +114,12 @@ void setoption(std::stringstream &stream) {
 
 // Apply a series of moves to the position
 // -- moves a3 d2d4
-void moves(Position &pos, std::stringstream &stream) {
+void moves(libataxx::Position &pos, std::stringstream &stream) {
     std::string word = "";
     while (stream >> word) {
-        Move move;
+        libataxx::Move move;
         try {
-            move = parse_san(word);
+            move = libataxx::Move::from_uai(word);
         } catch (...) {
             if (Options::checks["debug"].get()) {
                 std::cout << "info string failed to parse move \"" << word
@@ -127,8 +128,8 @@ void moves(Position &pos, std::stringstream &stream) {
             continue;
         }
 
-        if (legal_move(pos, move)) {
-            makemove(pos, move);
+        if (pos.legal_move(move)) {
+            pos.makemove(move);
         } else {
             if (Options::checks["debug"].get()) {
                 std::cout << "info string illegal move \"" << move << "\""
@@ -143,7 +144,7 @@ void moves(Position &pos, std::stringstream &stream) {
 // -- position startpos moves a3 d2d4
 // -- position fen x5o/7/2-1-2/7/2-1-2/7/o5x x 0 1
 // -- position fen x5o/7/2-1-2/7/2-1-2/7/o5x x 0 1 moves a3 d2d4
-void position(Position &pos, std::stringstream &stream) {
+void position(libataxx::Position &pos, std::stringstream &stream) {
     std::string word = "";
     std::string fen = "";
     stream >> word;
@@ -168,7 +169,7 @@ void position(Position &pos, std::stringstream &stream) {
         return;
     }
 
-    set_fen(pos, fen);
+    pos.set_fen(fen);
 
     // Return if we didn't run into a move string
     if (word != "moves") {
@@ -179,7 +180,7 @@ void position(Position &pos, std::stringstream &stream) {
 }
 
 // Start searching for a best move (threaded)
-void go(const Position &pos, std::stringstream &stream) {
+void go(const libataxx::Position &pos, std::stringstream &stream) {
     stop();
 
     SearchOptions options;
@@ -248,7 +249,7 @@ void stop() {
 // Communicate with the UAI protocol (Universal Ataxx Interface)
 // Based on the UCI protocol (Universal Chess Interface)
 void listen() {
-    Position pos;
+    libataxx::Position pos;
     uainewgame(pos);
 
     std::cout << "id name AtaxxEngine" << std::endl;
@@ -324,4 +325,5 @@ void listen() {
 
     stop();
 }
+
 }  // namespace UAI

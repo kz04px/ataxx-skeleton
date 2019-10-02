@@ -1,22 +1,24 @@
 #ifndef PROTOCOL_HPP
 #define PROTOCOL_HPP
 
+#include <libataxx/position.hpp>
 #include <sstream>
-#include "position.hpp"
 
 namespace UAI {
-void uainewgame(Position &pos);
+
+void uainewgame(libataxx::Position &pos);
 void isready();
 void setoption(std::stringstream &stream);
-void moves(Position &pos, std::stringstream &stream);
-void position(Position &pos, std::stringstream &stream);
-void perft(const Position &pos, std::stringstream &stream);
-void split(const Position &pos, std::stringstream &stream);
-void display(const Position &pos);
-void go(const Position &pos, std::stringstream &stream);
+void moves(libataxx::Position &pos, std::stringstream &stream);
+void position(libataxx::Position &pos, std::stringstream &stream);
+void perft(const libataxx::Position &pos, std::stringstream &stream);
+void split(const libataxx::Position &pos, std::stringstream &stream);
+void display(const libataxx::Position &pos);
+void go(const libataxx::Position &pos, std::stringstream &stream);
 void ponderhit();
 void stop();
 void listen();
+
 }  // namespace UAI
 
 #endif
