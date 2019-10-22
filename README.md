@@ -11,9 +11,8 @@ Ataxx is a two player, turn-based, perfect information board game created in 198
 ### Build instructions
 ```bash
 git clone --recurse-submodules https://github.com/kz04px/ataxx-skeleton
-cd ./ataxx-skeleton/libs/libataxx
-make
-cd ../../
+follow libataxx build instructions
+cd ./ataxx-skeleton
 make release
 ```
 
