@@ -81,7 +81,7 @@ void search(const libataxx::Position &pos,
         // Send info string
         std::chrono::duration<double> elapsed = finish - start_time;
         std::cout << "info"
-                  << " score cs " << score << " depth " << i << " seldepth "
+                  << " score cp " << score << " depth " << i << " seldepth "
                   << stats.seldepth << " time "
                   << static_cast<int>(elapsed.count() * 1000) << " nodes "
                   << stats.nodes;
