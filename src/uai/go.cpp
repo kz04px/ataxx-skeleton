@@ -4,7 +4,7 @@
 #include <libataxx/position.hpp>
 #include <thread>
 #include "../options.hpp"
-#include "../search.hpp"
+#include "../search/search.hpp"
 #include "protocol.hpp"
 
 namespace UAI {

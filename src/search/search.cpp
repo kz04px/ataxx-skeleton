@@ -1,7 +1,7 @@
 #include "search.hpp"
 #include <chrono>
 #include <iostream>
-#include "options.hpp"
+#include "../options.hpp"
 
 // Perform a search as specified in the options
 void search(const libataxx::Position &pos, const SearchOptions &options, volatile bool *stop) {

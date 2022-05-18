@@ -24,9 +24,10 @@ endif()
 add_executable(
     main
     src/main.cpp
-    src/minimax.cpp
     src/options.cpp
-    src/search.cpp
+
+    src/search/minimax.cpp
+    src/search/search.cpp
 
     src/uai/display.cpp
     src/uai/go.cpp
