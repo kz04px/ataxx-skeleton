@@ -15,18 +15,18 @@ void split(const libataxx::Position &pos, std::stringstream &stream) {
     }
 
     std::uint64_t total_nodes = 0ULL;
-    libataxx::Move moves[libataxx::max_moves];
-    const int num_moves = pos.legal_moves(moves);
+    const auto moves = pos.legal_moves();
 
-    for (int i = 0; i < num_moves; ++i) {
+    for (const auto move : moves) {
         libataxx::Position npos = pos;
-        npos.makemove(moves[i]);
+        npos.makemove(move);
 
         const std::uint64_t nodes = npos.perft(depth - 1);
         total_nodes += nodes;
 
-        std::cout << moves[i] << " " << nodes << std::endl;
+        std::cout << move << " " << nodes << std::endl;
     }
+
     std::cout << "nodes " << total_nodes << std::endl;
 }
 

@@ -47,24 +47,23 @@
     int best_score = std::numeric_limits<int>::min();
 
     // Move generation
-    libataxx::Move moves[libataxx::max_moves];
-    const int num_moves = pos.legal_moves(moves);
+    const auto moves = pos.legal_moves();
 
     // Keeping track of the node count
-    stats.nodes += num_moves;
+    stats.nodes += moves.size();
 
     // Play every legal move and run negamax on the resulting position
-    for (int i = 0; i < num_moves; ++i) {
+    for (const auto move : moves) {
         (stack + 1)->pv.clear();
 
         libataxx::Position npos = pos;
-        npos.makemove(moves[i]);
+        npos.makemove(move);
         const int score = -minimax(controller, stats, stack + 1, npos, depth - 1);
 
         if (score > best_score) {
             // Update PV
             stack->pv.clear();
-            stack->pv.push_back(moves[i]);
+            stack->pv.push_back(move);
             stack->pv.insert(stack->pv.begin() + 1, (stack + 1)->pv.begin(), (stack + 1)->pv.end());
 
             best_score = score;
