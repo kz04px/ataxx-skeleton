@@ -52,10 +52,16 @@ add_executable(
     tests/uai/position.cpp
     tests/uai/search_options.cpp
 
+    tests/search/tactics.cpp
+
     src/options.cpp
     src/uai/moves.cpp
     src/uai/position.cpp
     src/uai/search_options.cpp
+
+    src/search/eval.cpp
+    src/search/minimax.cpp
+    src/search/search.cpp
 )
 
 target_link_libraries(main Threads::Threads "${CMAKE_CURRENT_SOURCE_DIR}/libs/libataxx/build/static/libataxx.a")
