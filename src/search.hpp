@@ -61,9 +61,7 @@ int minimax(SearchController &controller,
             SearchStack *stack,
             const libataxx::Position &pos,
             const int depth);
-void search(const libataxx::Position &pos,
-            const SearchOptions &options,
-            volatile bool *stop);
+void search(const libataxx::Position &pos, const SearchOptions &options, volatile bool *stop);
 bool legal_pv(const libataxx::Position &pos, const PV &pv);
 
 #endif

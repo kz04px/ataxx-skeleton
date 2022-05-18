@@ -4,9 +4,7 @@
 #include "options.hpp"
 
 // Perform a search as specified in the options
-void search(const libataxx::Position &pos,
-            const SearchOptions &options,
-            volatile bool *stop) {
+void search(const libataxx::Position &pos, const SearchOptions &options, volatile bool *stop) {
     assert(stop);
 
     int depth = MAX_DEPTH;
@@ -36,8 +34,7 @@ void search(const libataxx::Position &pos,
             }
             assert(search_time > 0);
 
-            controller.end_time =
-                start_time + std::chrono::milliseconds(search_time);
+            controller.end_time = start_time + std::chrono::milliseconds(search_time);
             break;
         }
         case SearchType::Depth:
@@ -47,8 +44,7 @@ void search(const libataxx::Position &pos,
             controller.max_nodes = options.nodes;
             break;
         case SearchType::Movetime:
-            controller.end_time =
-                start_time + std::chrono::milliseconds(options.movetime);
+            controller.end_time = start_time + std::chrono::milliseconds(options.movetime);
             break;
         case SearchType::Infinite:
             break;
@@ -68,9 +64,8 @@ void search(const libataxx::Position &pos,
 
         assert(-MATE_SCORE < score && score < MATE_SCORE);
 
-        if (i > 1 &&
-            (*stop || stats.nodes >= controller.max_nodes ||
-             std::chrono::high_resolution_clock::now() > controller.end_time)) {
+        if (i > 1 && (*stop || stats.nodes >= controller.max_nodes ||
+                      std::chrono::high_resolution_clock::now() > controller.end_time)) {
             break;
         }
 
@@ -81,14 +76,10 @@ void search(const libataxx::Position &pos,
         // Send info string
         std::chrono::duration<double> elapsed = finish - start_time;
         std::cout << "info"
-                  << " score cp " << score << " depth " << i << " seldepth "
-                  << stats.seldepth << " time "
-                  << static_cast<int>(elapsed.count() * 1000) << " nodes "
-                  << stats.nodes;
+                  << " score cp " << score << " depth " << i << " seldepth " << stats.seldepth << " time "
+                  << static_cast<int>(elapsed.count() * 1000) << " nodes " << stats.nodes;
         if (elapsed.count() > 0) {
-            std::cout << " nps "
-                      << static_cast<std::uint64_t>(stats.nodes /
-                                                    elapsed.count());
+            std::cout << " nps " << static_cast<std::uint64_t>(stats.nodes / elapsed.count());
         }
         if (pv.size() > 0) {
             std::cout << " pv";
@@ -101,8 +92,7 @@ void search(const libataxx::Position &pos,
 
     // Send our best move
     if (Options::checks["Ponder"].get() && pv.size() >= 2) {
-        std::cout << "bestmove " << pv.at(0) << "ponder " << pv.at(1)
-                  << std::endl;
+        std::cout << "bestmove " << pv.at(0) << "ponder " << pv.at(1) << std::endl;
     } else if (pv.size() >= 1) {
         std::cout << "bestmove " << pv.at(0) << std::endl;
     } else {

@@ -18,8 +18,7 @@ int minimax(SearchController &controller,
         return 0;
     } else if (stats.nodes >= controller.max_nodes) {
         return 0;
-    } else if (std::chrono::high_resolution_clock::now() >
-               controller.end_time) {
+    } else if (std::chrono::high_resolution_clock::now() > controller.end_time) {
         return 0;
     }
 
@@ -60,16 +59,13 @@ int minimax(SearchController &controller,
 
         libataxx::Position npos = pos;
         npos.makemove(moves[i]);
-        const int score =
-            -minimax(controller, stats, stack + 1, npos, depth - 1);
+        const int score = -minimax(controller, stats, stack + 1, npos, depth - 1);
 
         if (score > best_score) {
             // Update PV
             stack->pv.clear();
             stack->pv.push_back(moves[i]);
-            stack->pv.insert(stack->pv.begin() + 1,
-                             (stack + 1)->pv.begin(),
-                             (stack + 1)->pv.end());
+            stack->pv.insert(stack->pv.begin() + 1, (stack + 1)->pv.begin(), (stack + 1)->pv.end());
 
             best_score = score;
         }

@@ -29,9 +29,8 @@ void perft(const libataxx::Position &pos, std::stringstream &stream) {
         std::chrono::duration<double> elapsed = finish - start;
 
         std::cout << "info"
-                  << " depth " << i << " nodes " << nodes << " time "
-                  << static_cast<int>(elapsed.count() * 1000) << " nps "
-                  << static_cast<int>(nodes / elapsed.count()) << std::endl;
+                  << " depth " << i << " nodes " << nodes << " time " << static_cast<int>(elapsed.count() * 1000)
+                  << " nps " << static_cast<int>(nodes / elapsed.count()) << std::endl;
     }
 
     std::cout << "nodes " << nodes << std::endl;
@@ -122,8 +121,7 @@ void moves(libataxx::Position &pos, std::stringstream &stream) {
             move = libataxx::Move::from_uai(word);
         } catch (...) {
             if (Options::checks["debug"].get()) {
-                std::cout << "info string failed to parse move \"" << word
-                          << "\"" << std::endl;
+                std::cout << "info string failed to parse move \"" << word << "\"" << std::endl;
             }
             continue;
         }
@@ -132,8 +130,7 @@ void moves(libataxx::Position &pos, std::stringstream &stream) {
             pos.makemove(move);
         } else {
             if (Options::checks["debug"].get()) {
-                std::cout << "info string illegal move \"" << move << "\""
-                          << std::endl;
+                std::cout << "info string illegal move \"" << move << "\"" << std::endl;
             }
         }
     }
@@ -163,8 +160,7 @@ void position(libataxx::Position &pos, std::stringstream &stream) {
         }
     } else {
         if (Options::checks["debug"].get()) {
-            std::cout << "info unknown UAI::position term \"" << word << "\""
-                      << std::endl;
+            std::cout << "info unknown UAI::position term \"" << word << "\"" << std::endl;
         }
         return;
     }
@@ -224,8 +220,7 @@ void go(const libataxx::Position &pos, std::stringstream &stream) {
             stream >> options.movestogo;
         } else {
             if (Options::checks["debug"].get()) {
-                std::cout << "info unknown UAI::go term \"" << word << "\""
-                          << std::endl;
+                std::cout << "info unknown UAI::go term \"" << word << "\"" << std::endl;
             }
         }
     }
@@ -317,8 +312,7 @@ void listen() {
             break;
         } else {
             if (Options::checks["debug"].get()) {
-                std::cout << "info unknown UAI command \"" << word << "\""
-                          << std::endl;
+                std::cout << "info unknown UAI command \"" << word << "\"" << std::endl;
             }
         }
     }
