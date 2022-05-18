@@ -49,7 +49,7 @@ struct [[nodiscard]] SearchStats {
     int seldepth = 0;
 };
 
-typedef std::vector<libataxx::Move> PV;
+using PV = std::vector<libataxx::Move>;
 
 struct [[nodiscard]] SearchStack {
     int ply = 0;
