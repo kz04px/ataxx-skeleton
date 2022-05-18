@@ -27,7 +27,8 @@ The only differences are that instances of 'c' for 'chess' have been replaced by
 ### FEN strings
 Player one's pieces are represented by 'x'<br/>
 Player two's pieces are represented by 'o'<br/>
-Gaps are represented by '-'<br/>
+Empty squares are represented by '-'<br/>
+Gaps are left blank with ' '<br/>
 Everything else about the string is the same as in chess.<br/>
 Examples:
 ```
