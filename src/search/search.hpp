@@ -19,7 +19,7 @@ enum class SearchType
     Infinite
 };
 
-struct SearchOptions {
+struct [[nodiscard]] SearchOptions {
     SearchType type = SearchType::Time;
     // Time search
     int btime = -1;
@@ -35,13 +35,13 @@ struct SearchOptions {
     int depth = -1;
 };
 
-struct SearchController {
+struct [[nodiscard]] SearchController {
     volatile bool *stop;
     std::uint64_t max_nodes;
     std::chrono::high_resolution_clock::time_point end_time;
 };
 
-struct SearchStats {
+struct [[nodiscard]] SearchStats {
     std::uint64_t nodes = 0ULL;
     std::uint64_t tt_hits = 0ULL;
     std::uint64_t tb_hits = 0ULL;
@@ -51,17 +51,17 @@ struct SearchStats {
 
 typedef std::vector<libataxx::Move> PV;
 
-struct SearchStack {
+struct [[nodiscard]] SearchStack {
     int ply = 0;
     PV pv;
 };
 
-int minimax(SearchController &controller,
-            SearchStats &stats,
-            SearchStack *stack,
-            const libataxx::Position &pos,
-            const int depth);
-libataxx::Move search(const libataxx::Position &pos, const SearchOptions &options, volatile bool *stop);
-bool legal_pv(const libataxx::Position &pos, const PV &pv);
+[[nodiscard]] int minimax(SearchController &controller,
+                          SearchStats &stats,
+                          SearchStack *stack,
+                          const libataxx::Position &pos,
+                          const int depth);
+[[nodiscard]] libataxx::Move search(const libataxx::Position &pos, const SearchOptions &options, volatile bool *stop);
+[[nodiscard]] bool legal_pv(const libataxx::Position &pos, const PV &pv);
 
 #endif

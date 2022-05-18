@@ -6,29 +6,29 @@
 
 namespace Options {
 
-struct Check {
+struct [[nodiscard]] Check {
     std::string name;
     bool value = false;
 };
 
-struct Spin {
+struct [[nodiscard]] Spin {
     std::string name;
     int min = 0;
     int max = 0;
     int val = 0;
 };
 
-struct Button {
+struct [[nodiscard]] Button {
     std::string name;
 };
 
-struct Combo {
+struct [[nodiscard]] Combo {
     std::string name;
     std::size_t idx = 0;
     std::vector<std::string> values;
 };
 
-struct String {
+struct [[nodiscard]] String {
     std::string name;
     std::string value;
 };

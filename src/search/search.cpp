@@ -4,7 +4,7 @@
 #include "../options.hpp"
 
 // Perform a search as specified in the options
-libataxx::Move search(const libataxx::Position &pos, const SearchOptions &options, volatile bool *stop) {
+[[nodiscard]] libataxx::Move search(const libataxx::Position &pos, const SearchOptions &options, volatile bool *stop) {
     assert(stop);
 
     int depth = MAX_DEPTH;
@@ -94,7 +94,7 @@ libataxx::Move search(const libataxx::Position &pos, const SearchOptions &option
 }
 
 // Check the legality of a PV based on a given board
-bool legal_pv(const libataxx::Position &pos, const PV &pv) {
+[[nodiscard]] bool legal_pv(const libataxx::Position &pos, const PV &pv) {
     libataxx::Position npos = pos;
     for (const auto &move : pv) {
         if (!npos.legal_move(move)) {
