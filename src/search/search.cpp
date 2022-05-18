@@ -61,7 +61,7 @@
     // Iterative deepening
     for (int i = 1; i <= depth; ++i) {
         const int score = minimax(controller, stats, stack, pos, i);
-        auto finish = std::chrono::high_resolution_clock::now();
+        const auto finish = std::chrono::high_resolution_clock::now();
 
         assert(-MATE_SCORE < score && score < MATE_SCORE);
 
