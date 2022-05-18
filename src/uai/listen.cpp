@@ -8,6 +8,46 @@
 
 namespace UAI {
 
+auto operator<<(std::ostream &os, const Options::Check &check) noexcept -> std::ostream & {
+    os << "option name " << check.name;
+    os << " type check";
+    os << " default " << (check.value ? "true" : "false");
+    return os;
+}
+
+auto operator<<(std::ostream &os, const Options::Spin &spin) noexcept -> std::ostream & {
+    os << "option name " << spin.name;
+    os << " type spin";
+    os << " default " << spin.val;
+    os << " min " << spin.min;
+    os << " max " << spin.max;
+    return os;
+}
+
+auto operator<<(std::ostream &os, const Options::Button &button) noexcept -> std::ostream & {
+    os << "option name " << button.name;
+    os << " type button";
+    return os;
+}
+
+auto operator<<(std::ostream &os, const Options::String &string) noexcept -> std::ostream & {
+    os << "option name " << string.name;
+    os << " type string";
+    os << " default " << string.value;
+    return os;
+}
+
+auto operator<<(std::ostream &os, const Options::Combo &combo) noexcept -> std::ostream & {
+    os << "option name " << combo.name;
+    os << " type combo";
+    os << " default " << combo.values[combo.idx];
+    os << " options";
+    for (const auto &str : combo.values) {
+        os << " " << str;
+    }
+    return os;
+}
+
 // Communicate with the UAI protocol (Universal Ataxx Interface)
 // Based on the UCI protocol (Universal Chess Interface)
 void listen() {
@@ -16,12 +56,7 @@ void listen() {
 
     std::cout << "id name AtaxxEngine" << std::endl;
     std::cout << "id author kz04px" << std::endl;
-
-    // Create options
-    Options::checks["debug"] = Options::Check(false);
-
-    Options::print();
-
+    std::cout << Options::debug << std::endl;
     std::cout << "uaiok" << std::endl;
 
     std::string word;
@@ -74,7 +109,7 @@ void listen() {
         } else if (word == "quit") {
             break;
         } else {
-            if (Options::checks["debug"].get()) {
+            if (Options::debug.value) {
                 std::cout << "info unknown UAI command \"" << word << "\"" << std::endl;
             }
         }

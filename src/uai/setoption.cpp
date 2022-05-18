@@ -6,7 +6,7 @@ namespace UAI {
 
 // Set an option
 void setoption(std::stringstream &stream) {
-    std::string word = "";
+    std::string word;
 
     stream >> word;
     if (word != "name") {
@@ -14,7 +14,7 @@ void setoption(std::stringstream &stream) {
     }
 
     // Collect option name
-    std::string name = "";
+    std::string name;
     while (stream >> word && word != "value") {
         if (name != "") {
             name += " ";
@@ -31,8 +31,8 @@ void setoption(std::stringstream &stream) {
         value += word;
     }
 
-    if (name != "" && value != "") {
-        Options::set(name, value);
+    if (name == "debug") {
+        Options::debug.value = value == "true";
     }
 }
 

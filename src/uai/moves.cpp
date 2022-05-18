@@ -16,7 +16,7 @@ void moves(libataxx::Position &pos, std::stringstream &stream) {
         try {
             move = libataxx::Move::from_uai(word);
         } catch (...) {
-            if (Options::checks["debug"].get()) {
+            if (Options::debug.value) {
                 std::cout << "info string failed to parse move \"" << word << "\"" << std::endl;
             }
             continue;
@@ -25,7 +25,7 @@ void moves(libataxx::Position &pos, std::stringstream &stream) {
         if (pos.legal_move(move)) {
             pos.makemove(move);
         } else {
-            if (Options::checks["debug"].get()) {
+            if (Options::debug.value) {
                 std::cout << "info string illegal move \"" << move << "\"" << std::endl;
             }
         }

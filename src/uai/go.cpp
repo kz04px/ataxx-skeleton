@@ -65,7 +65,7 @@ void go(const libataxx::Position &pos, std::stringstream &stream) {
             options.type = SearchType::Time;
             stream >> options.movestogo;
         } else {
-            if (Options::checks["debug"].get()) {
+            if (Options::debug.value) {
                 std::cout << "info unknown UAI::go term \"" << word << "\"" << std::endl;
             }
         }

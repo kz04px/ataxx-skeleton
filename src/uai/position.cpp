@@ -29,7 +29,7 @@ void position(libataxx::Position &pos, std::stringstream &stream) {
             fen += word;
         }
     } else {
-        if (Options::checks["debug"].get()) {
+        if (Options::debug.value) {
             std::cout << "info unknown UAI::position term \"" << word << "\"" << std::endl;
         }
         return;
