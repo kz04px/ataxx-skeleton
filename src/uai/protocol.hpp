@@ -3,6 +3,7 @@
 
 #include <libataxx/position.hpp>
 #include <sstream>
+#include "../search/search.hpp"
 
 namespace UAI {
 
@@ -22,6 +23,7 @@ void position(libataxx::Position &pos, std::stringstream &stream);
 void go(const libataxx::Position &pos, std::stringstream &stream);
 void stop();
 void listen();
+[[nodiscard]] SearchOptions search_options(std::stringstream &stream);
 
 }  // namespace UAI
 

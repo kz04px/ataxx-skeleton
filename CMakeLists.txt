@@ -37,6 +37,7 @@ add_executable(
     src/uai/moves.cpp
     src/uai/perft.cpp
     src/uai/position.cpp
+    src/uai/search_options.cpp
     src/uai/setoption.cpp
     src/uai/split.cpp
     src/uai/uainewgame.cpp
@@ -49,10 +50,12 @@ add_executable(
 
     tests/uai/moves.cpp
     tests/uai/position.cpp
+    tests/uai/search_options.cpp
 
     src/options.cpp
     src/uai/moves.cpp
     src/uai/position.cpp
+    src/uai/search_options.cpp
 )
 
 target_link_libraries(main Threads::Threads "${CMAKE_CURRENT_SOURCE_DIR}/libs/libataxx/build/static/libataxx.a")
