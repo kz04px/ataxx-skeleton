@@ -82,10 +82,12 @@ struct [[nodiscard]] SearchStats {
                           SearchStack *stack,
                           const libataxx::Position &pos,
                           const int depth);
-[[nodiscard]] libataxx::Move search(const libataxx::Position &pos,
-                                    const SearchOptions &options,
-                                    volatile bool *stop,
-                                    std::function<void(const SearchStats &)> info_handler);
+[[nodiscard]] libataxx::Move search(
+    const libataxx::Position &pos,
+    const SearchOptions &options,
+    volatile bool *stop,
+    std::function<void(const SearchStats &)> info_handler = [](const auto &) {
+    });
 [[nodiscard]] bool legal_pv(const libataxx::Position &pos, const PV &pv);
 
 #endif

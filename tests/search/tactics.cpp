@@ -7,9 +7,6 @@
 TEST_CASE("Tactics") {
     using test_type = std::pair<std::string, std::string>;
 
-    auto info_handler = [](const SearchStats &) {
-    };
-
     volatile bool stop = false;
     const auto options = SearchOptions::from_depth(3);
 
@@ -21,7 +18,7 @@ TEST_CASE("Tactics") {
 
         for (const auto &[fen, bestmove] : tests) {
             auto pos = libataxx::Position(fen);
-            const auto move = search(pos, options, &stop, info_handler);
+            const auto move = search(pos, options, &stop);
             CHECK(static_cast<std::string>(move) == bestmove);
         }
     }
@@ -34,7 +31,7 @@ TEST_CASE("Tactics") {
 
         for (const auto &[fen, bestmove] : tests) {
             auto pos = libataxx::Position(fen);
-            const auto move = search(pos, options, &stop, info_handler);
+            const auto move = search(pos, options, &stop);
             CHECK(static_cast<std::string>(move) == bestmove);
         }
     }

@@ -3,12 +3,10 @@
 #include "../options.hpp"
 
 // Perform a search as specified in the options
-[[nodiscard]] libataxx::Move search(
-    const libataxx::Position &pos,
-    const SearchOptions &options,
-    volatile bool *stop,
-    std::function<void(const SearchStats &)> info_handler = [](const auto &) {
-    }) {
+[[nodiscard]] libataxx::Move search(const libataxx::Position &pos,
+                                    const SearchOptions &options,
+                                    volatile bool *stop,
+                                    std::function<void(const SearchStats &)> info_handler) {
     assert(stop);
 
     int depth = MAX_DEPTH;
