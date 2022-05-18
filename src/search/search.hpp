@@ -10,7 +10,7 @@
 #define MAX_DEPTH 128
 #define MATE_SCORE 100000
 
-enum SearchType
+enum class SearchType
 {
     Time = 0,
     Depth,
@@ -20,7 +20,7 @@ enum SearchType
 };
 
 struct SearchOptions {
-    int type = SearchType::Time;
+    SearchType type = SearchType::Time;
     // Time search
     int btime = -1;
     int wtime = -1;
