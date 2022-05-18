@@ -53,6 +53,7 @@ add_executable(
     tests/uai/search_options.cpp
 
     tests/search/tactics.cpp
+    tests/search/timing.cpp
 
     src/options.cpp
     src/uai/moves.cpp
