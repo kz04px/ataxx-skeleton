@@ -27,8 +27,8 @@
 
     // Return mate or draw scores if the game is over
     if (pos.gameover()) {
-        const int num_us = pos.us().count();
-        const int num_them = pos.them().count();
+        const auto num_us = pos.us().count();
+        const auto num_them = pos.them().count();
 
         if (num_us > num_them) {
             return MATE_SCORE - stack->ply;
@@ -44,7 +44,7 @@
         return eval(pos);
     }
 
-    int best_score = std::numeric_limits<int>::min();
+    auto best_score = std::numeric_limits<int>::min();
 
     // Move generation
     const auto moves = pos.legal_moves();
@@ -56,9 +56,9 @@
     for (const auto move : moves) {
         (stack + 1)->pv.clear();
 
-        libataxx::Position npos = pos;
+        auto npos = pos;
         npos.makemove(move);
-        const int score = -minimax(controller, stats, stack + 1, npos, depth - 1);
+        const auto score = -minimax(controller, stats, stack + 1, npos, depth - 1);
 
         if (score > best_score) {
             // Update PV

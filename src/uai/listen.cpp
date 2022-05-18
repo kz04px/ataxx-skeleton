@@ -80,7 +80,7 @@ void listen() {
     uainewgame(pos);
 
     // isready received, now we're ready to do something
-    bool quit = false;
+    auto quit = false;
     while (!quit) {
         std::getline(std::cin, line);
         std::stringstream stream{line};

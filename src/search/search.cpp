@@ -9,7 +9,7 @@
                                     std::function<void(const SearchStats &)> info_handler) {
     assert(stop);
 
-    int depth = MAX_DEPTH;
+    auto depth = MAX_DEPTH;
     const auto start_time = std::chrono::high_resolution_clock::now();
     SearchStats stats;
     SearchStack stack[MAX_DEPTH + 1];
@@ -20,7 +20,7 @@
 
     switch (options.type) {
         case SearchType::Time: {
-            int search_time = 0;
+            auto search_time = 0;
 
             // Calculate time usage
             if (pos.turn() == libataxx::Side::Black) {
@@ -60,7 +60,7 @@
 
     // Iterative deepening
     for (int i = 1; i <= depth; ++i) {
-        const int score = minimax(controller, stats, stack, pos, i);
+        const auto score = minimax(controller, stats, stack, pos, i);
         const auto finish = std::chrono::high_resolution_clock::now();
 
         assert(-MATE_SCORE < score && score < MATE_SCORE);
@@ -86,7 +86,7 @@
 
 // Check the legality of a PV based on a given board
 [[nodiscard]] bool legal_pv(const libataxx::Position &pos, const PV &pv) {
-    libataxx::Position npos = pos;
+    auto npos = pos;
     for (const auto &move : pv) {
         if (!npos.legal_move(move)) {
             return false;

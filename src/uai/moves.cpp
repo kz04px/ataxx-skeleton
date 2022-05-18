@@ -12,7 +12,7 @@ namespace UAI {
 void moves(libataxx::Position &pos, std::stringstream &stream) {
     std::string word;
     while (stream >> word) {
-        libataxx::Move move;
+        auto move = libataxx::Move();
         try {
             move = libataxx::Move::from_uai(word);
         } catch (...) {
