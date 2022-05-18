@@ -102,9 +102,7 @@ void listen() {
             go(pos, stream);
         } else if (word == "stop") {
             stop();
-        } else if (word == "print") {
-            Extension::display(pos);
-        } else if (word == "display") {
+        } else if (word == "print" || word == "display") {
             Extension::display(pos);
         } else if (word == "quit") {
             break;
