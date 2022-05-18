@@ -27,7 +27,17 @@ add_executable(
     src/minimax.cpp
     src/options.cpp
     src/search.cpp
-    src/uai.cpp
+
+    src/uai/display.cpp
+    src/uai/go.cpp
+    src/uai/isready.cpp
+    src/uai/listen.cpp
+    src/uai/moves.cpp
+    src/uai/perft.cpp
+    src/uai/position.cpp
+    src/uai/setoption.cpp
+    src/uai/split.cpp
+    src/uai/uainewgame.cpp
 )
 
 target_link_libraries(main Threads::Threads "${CMAKE_CURRENT_SOURCE_DIR}/libs/libataxx/build/static/libataxx.a")
