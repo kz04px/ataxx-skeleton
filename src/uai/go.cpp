@@ -9,6 +9,25 @@ namespace UAI {
 std::thread search_thread;
 volatile bool search_stop = false;
 
+void info_handler(const SearchStats &stats) noexcept {
+    std::cout << "info";
+    std::cout << " depth " << stats.depth;
+    std::cout << " seldepth " << stats.seldepth;
+    std::cout << " score cp " << stats.score;
+    std::cout << " time " << stats.elapsed.count();
+    std::cout << " nodes " << stats.nodes;
+    if (stats.elapsed.count() > 0) {
+        std::cout << " nps " << static_cast<std::uint64_t>(1'000 * stats.nodes / stats.elapsed.count());
+    }
+    if (!stats.pv.empty()) {
+        std::cout << " pv";
+        for (const auto &move : stats.pv) {
+            std::cout << " " << move;
+        }
+    }
+    std::cout << std::endl;
+}
+
 // Stop searching
 void stop() {
     search_stop = true;
@@ -25,7 +44,7 @@ void go(const libataxx::Position &pos, std::stringstream &stream) {
     const auto options = search_options(stream);
 
     search_thread = std::thread([pos, options]() {
-        const auto bestmove = search(pos, options, &search_stop);
+        const auto bestmove = search(pos, options, &search_stop, info_handler);
         std::cout << "bestmove " << bestmove << "\n";
     });
 }

@@ -3,6 +3,7 @@
 
 #include <chrono>
 #include <cstdint>
+#include <functional>
 #include <libataxx/move.hpp>
 #include <libataxx/position.hpp>
 #include <vector>
@@ -41,18 +42,21 @@ struct [[nodiscard]] SearchController {
     std::chrono::high_resolution_clock::time_point end_time;
 };
 
+using PV = std::vector<libataxx::Move>;
+
+struct [[nodiscard]] SearchStack {
+    int ply = 0;
+    PV pv;
+};
+
 struct [[nodiscard]] SearchStats {
     std::uint64_t nodes = 0ULL;
     std::uint64_t tt_hits = 0ULL;
     std::uint64_t tb_hits = 0ULL;
     int depth = 0;
     int seldepth = 0;
-};
-
-using PV = std::vector<libataxx::Move>;
-
-struct [[nodiscard]] SearchStack {
-    int ply = 0;
+    int score = 0;
+    std::chrono::milliseconds elapsed = std::chrono::milliseconds();
     PV pv;
 };
 
@@ -61,7 +65,10 @@ struct [[nodiscard]] SearchStack {
                           SearchStack *stack,
                           const libataxx::Position &pos,
                           const int depth);
-[[nodiscard]] libataxx::Move search(const libataxx::Position &pos, const SearchOptions &options, volatile bool *stop);
+[[nodiscard]] libataxx::Move search(const libataxx::Position &pos,
+                                    const SearchOptions &options,
+                                    volatile bool *stop,
+                                    std::function<void(const SearchStats &)> info_handler);
 [[nodiscard]] bool legal_pv(const libataxx::Position &pos, const PV &pv);
 
 #endif

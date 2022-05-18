@@ -1,15 +1,18 @@
 #include "search.hpp"
 #include <chrono>
-#include <iostream>
 #include "../options.hpp"
 
 // Perform a search as specified in the options
-[[nodiscard]] libataxx::Move search(const libataxx::Position &pos, const SearchOptions &options, volatile bool *stop) {
+[[nodiscard]] libataxx::Move search(
+    const libataxx::Position &pos,
+    const SearchOptions &options,
+    volatile bool *stop,
+    std::function<void(const SearchStats &)> info_handler = [](const auto &) {
+    }) {
     assert(stop);
 
     int depth = MAX_DEPTH;
     const auto start_time = std::chrono::high_resolution_clock::now();
-    PV pv;
     SearchStats stats;
     SearchStack stack[MAX_DEPTH + 1];
     SearchController controller;
@@ -70,27 +73,17 @@
         }
 
         // Update our main pv
-        pv = stack[0].pv;
-        assert(legal_pv(pos, pv));
+        stats.depth = i;
+        stats.score = score;
+        stats.pv = stack[0].pv;
+        stats.elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(finish - start_time);
+        assert(legal_pv(pos, stats.pv));
 
         // Send info string
-        std::chrono::duration<double> elapsed = finish - start_time;
-        std::cout << "info"
-                  << " score cp " << score << " depth " << i << " seldepth " << stats.seldepth << " time "
-                  << static_cast<int>(elapsed.count() * 1000) << " nodes " << stats.nodes;
-        if (elapsed.count() > 0) {
-            std::cout << " nps " << static_cast<std::uint64_t>(stats.nodes / elapsed.count());
-        }
-        if (pv.size() > 0) {
-            std::cout << " pv";
-            for (const auto &move : pv) {
-                std::cout << " " << move;
-            }
-        }
-        std::cout << std::endl;
+        info_handler(stats);
     }
 
-    return pv.at(0);
+    return stats.pv.at(0);
 }
 
 // Check the legality of a PV based on a given board
