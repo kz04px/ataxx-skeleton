@@ -4,7 +4,7 @@
 namespace UAI {
 
 // New game started
-void uainewgame(libataxx::Position &pos) {
+auto uainewgame(libataxx::Position &pos) -> void {
     pos.set_fen("startpos");
 }
 

@@ -4,7 +4,7 @@
 namespace UAI {
 
 // Say that we're ready
-void isready() {
+auto isready() -> void {
     std::cout << "readyok" << std::endl;
 }
 

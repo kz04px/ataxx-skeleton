@@ -6,6 +6,6 @@ class Position;
 }  // namespace libataxx
 
 // Return the evaluation of the position from the side to move's point of view
-[[nodiscard]] int eval(const libataxx::Position &pos);
+[[nodiscard]] auto eval(const libataxx::Position &pos) -> int;
 
 #endif

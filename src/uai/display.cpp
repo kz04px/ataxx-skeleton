@@ -5,7 +5,7 @@
 namespace UAI::Extension {
 
 // Display the board
-void display(const libataxx::Position &pos) {
+auto display(const libataxx::Position &pos) -> void {
     std::cout << pos << std::endl;
 }
 

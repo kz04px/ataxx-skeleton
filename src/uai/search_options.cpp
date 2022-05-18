@@ -4,7 +4,7 @@
 
 namespace UAI {
 
-[[nodiscard]] SearchOptions search_options(std::stringstream &stream) {
+[[nodiscard]] auto search_options(std::stringstream &stream) -> SearchOptions {
     SearchOptions options;
     std::string word;
 

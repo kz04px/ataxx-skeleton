@@ -7,7 +7,7 @@
 namespace UAI::Extension {
 
 // Perform a split perft
-void split(const libataxx::Position &pos, std::stringstream &stream) {
+auto split(const libataxx::Position &pos, std::stringstream &stream) -> void {
     int depth = 0;
     stream >> depth;
     if (depth < 1) {

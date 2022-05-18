@@ -77,17 +77,19 @@ struct [[nodiscard]] SearchStats {
     PV pv;
 };
 
-[[nodiscard]] int minimax(SearchController &controller,
-                          SearchStats &stats,
-                          SearchStack *stack,
-                          const libataxx::Position &pos,
-                          const int depth);
-[[nodiscard]] libataxx::Move search(
+[[nodiscard]] auto minimax(SearchController &controller,
+                           SearchStats &stats,
+                           SearchStack *stack,
+                           const libataxx::Position &pos,
+                           const int depth) -> int;
+
+[[nodiscard]] auto search(
     const libataxx::Position &pos,
     const SearchOptions &options,
     volatile bool *stop,
     std::function<void(const SearchStats &)> info_handler = [](const auto &) {
-    });
-[[nodiscard]] bool legal_pv(const libataxx::Position &pos, const PV &pv);
+    }) -> libataxx::Move;
+
+[[nodiscard]] auto legal_pv(const libataxx::Position &pos, const PV &pv) -> bool;
 
 #endif

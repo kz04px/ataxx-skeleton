@@ -9,7 +9,7 @@ namespace UAI {
 std::thread search_thread;
 volatile bool search_stop = false;
 
-void info_handler(const SearchStats &stats) noexcept {
+auto info_handler(const SearchStats &stats) noexcept -> void {
     std::cout << "info";
     std::cout << " depth " << stats.depth;
     std::cout << " seldepth " << stats.seldepth;
@@ -29,7 +29,7 @@ void info_handler(const SearchStats &stats) noexcept {
 }
 
 // Stop searching
-void stop() {
+auto stop() -> void {
     search_stop = true;
     if (search_thread.joinable()) {
         search_thread.join();
@@ -38,7 +38,7 @@ void stop() {
 }
 
 // Start searching for a best move (threaded)
-void go(const libataxx::Position &pos, std::stringstream &stream) {
+auto go(const libataxx::Position &pos, std::stringstream &stream) -> void {
     stop();
 
     const auto options = search_options(stream);

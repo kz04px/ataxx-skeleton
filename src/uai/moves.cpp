@@ -9,7 +9,7 @@ namespace UAI {
 
 // Apply a series of moves to the position
 // -- moves a3 d2d4
-void moves(libataxx::Position &pos, std::stringstream &stream) {
+auto moves(libataxx::Position &pos, std::stringstream &stream) -> void {
     std::string word;
     while (stream >> word) {
         auto move = libataxx::Move();

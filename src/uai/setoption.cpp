@@ -5,7 +5,7 @@
 namespace UAI {
 
 // Set an option
-void setoption(std::stringstream &stream) {
+auto setoption(std::stringstream &stream) -> void {
     std::string word;
 
     stream >> word;

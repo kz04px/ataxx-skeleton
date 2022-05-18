@@ -6,7 +6,7 @@
 namespace UAI::Extension {
 
 // Perform a perft search
-void perft(const libataxx::Position &pos, std::stringstream &stream) {
+auto perft(const libataxx::Position &pos, std::stringstream &stream) -> void {
     auto depth = 0;
     stream >> depth;
     if (depth < 1) {

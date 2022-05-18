@@ -5,11 +5,11 @@
 #include "search.hpp"
 
 // Minimax algorithm (negamax)
-[[nodiscard]] int minimax(SearchController &controller,
-                          SearchStats &stats,
-                          SearchStack *stack,
-                          const libataxx::Position &pos,
-                          const int depth) {
+[[nodiscard]] auto minimax(SearchController &controller,
+                           SearchStats &stats,
+                           SearchStack *stack,
+                           const libataxx::Position &pos,
+                           const int depth) -> int {
     assert(stack);
     assert(controller.stop);
 

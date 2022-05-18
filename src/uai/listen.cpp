@@ -50,7 +50,7 @@ auto operator<<(std::ostream &os, const Options::Combo &combo) noexcept -> std::
 
 // Communicate with the UAI protocol (Universal Ataxx Interface)
 // Based on the UCI protocol (Universal Chess Interface)
-void listen() {
+auto listen() -> void {
     std::cout << "id name AtaxxEngine" << std::endl;
     std::cout << "id author kz04px" << std::endl;
     std::cout << Options::debug << std::endl;
