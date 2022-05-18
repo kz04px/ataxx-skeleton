@@ -26,6 +26,7 @@ add_executable(
     src/main.cpp
     src/options.cpp
 
+    src/search/eval.cpp
     src/search/minimax.cpp
     src/search/search.cpp
 
