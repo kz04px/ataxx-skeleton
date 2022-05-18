@@ -21,6 +21,22 @@ enum class SearchType
 };
 
 struct [[nodiscard]] SearchOptions {
+    static SearchOptions from_time(const int bt, const int wt, const int bi, const int wi) {
+        return SearchOptions{SearchType::Time, bt, wt, bi, wi};
+    }
+
+    static SearchOptions from_movetime(const int time) {
+        return SearchOptions{SearchType::Movetime, .movetime = time};
+    }
+
+    static SearchOptions from_depth(const int ply) {
+        return SearchOptions{SearchType::Depth, .depth = ply};
+    }
+
+    static SearchOptions from_nodes(const std::uint64_t n) {
+        return SearchOptions{SearchType::Nodes, .nodes = n};
+    }
+
     SearchType type = SearchType::Time;
     // Time search
     int btime = -1;
