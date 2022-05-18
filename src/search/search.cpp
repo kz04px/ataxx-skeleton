@@ -26,9 +26,9 @@
 
             // Calculate time usage
             if (pos.turn() == libataxx::Side::Black) {
-                search_time = options.btime / 30;
+                search_time = *options.btime / 30;
             } else {
-                search_time = options.wtime / 30;
+                search_time = *options.wtime / 30;
             }
 
             // Minimum time
@@ -41,13 +41,13 @@
             break;
         }
         case SearchType::Depth:
-            depth = options.depth;
+            depth = *options.depth;
             break;
         case SearchType::Nodes:
-            controller.max_nodes = options.nodes;
+            controller.max_nodes = *options.nodes;
             break;
         case SearchType::Movetime:
-            controller.end_time = start_time + std::chrono::milliseconds(options.movetime);
+            controller.end_time = start_time + std::chrono::milliseconds(*options.movetime);
             break;
         case SearchType::Infinite:
             break;

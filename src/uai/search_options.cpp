@@ -12,12 +12,16 @@ namespace UAI {
         // Node search
         if (word == "nodes") {
             options.type = SearchType::Nodes;
-            stream >> options.nodes;
+            std::uint64_t n = 0;
+            stream >> n;
+            options.nodes = n;
         }
         // Depth search
         else if (word == "depth") {
             options.type = SearchType::Depth;
-            stream >> options.depth;
+            int n = 0;
+            stream >> n;
+            options.depth = n;
         }
         // Infinite search
         else if (word == "infinite") {
@@ -26,24 +30,36 @@ namespace UAI {
         // Movetime
         else if (word == "movetime") {
             options.type = SearchType::Movetime;
-            stream >> options.movetime;
+            int n = 0;
+            stream >> n;
+            options.movetime = n;
         }
         // Time search
         else if (word == "btime") {
             options.type = SearchType::Time;
-            stream >> options.btime;
+            int n = 0;
+            stream >> n;
+            options.btime = n;
         } else if (word == "wtime") {
             options.type = SearchType::Time;
-            stream >> options.wtime;
+            int n = 0;
+            stream >> n;
+            options.wtime = n;
         } else if (word == "binc") {
             options.type = SearchType::Time;
-            stream >> options.binc;
+            int n = 0;
+            stream >> n;
+            options.binc = n;
         } else if (word == "winc") {
             options.type = SearchType::Time;
-            stream >> options.winc;
+            int n = 0;
+            stream >> n;
+            options.winc = n;
         } else if (word == "movestogo") {
             options.type = SearchType::Time;
-            stream >> options.movestogo;
+            int n = 0;
+            stream >> n;
+            options.movestogo = n;
         } else {
             if (Options::debug.value) {
                 std::cout << "info unknown UAI::go term \"" << word << "\"" << std::endl;

@@ -6,6 +6,7 @@
 #include <functional>
 #include <libataxx/move.hpp>
 #include <libataxx/position.hpp>
+#include <optional>
 #include <vector>
 
 #define MAX_DEPTH 128
@@ -39,17 +40,17 @@ struct [[nodiscard]] SearchOptions {
 
     SearchType type = SearchType::Time;
     // Time search
-    int btime = -1;
-    int wtime = -1;
-    int binc = -1;
-    int winc = -1;
-    int movestogo = -1;
+    std::optional<int> btime = {};
+    std::optional<int> wtime = {};
+    std::optional<int> binc = {};
+    std::optional<int> winc = {};
+    std::optional<int> movestogo = {};
     // Movetime search
-    int movetime = -1;
+    std::optional<int> movetime = {};
     // Nodes search
-    std::uint64_t nodes = -1;
+    std::optional<std::uint64_t> nodes = {};
     // Depth search
-    int depth = -1;
+    std::optional<int> depth = {};
 };
 
 struct [[nodiscard]] SearchController {
