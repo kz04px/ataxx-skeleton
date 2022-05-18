@@ -16,16 +16,16 @@ void setoption(std::stringstream &stream) {
     // Collect option name
     std::string name;
     while (stream >> word && word != "value") {
-        if (name != "") {
+        if (!name.empty()) {
             name += " ";
         }
         name += word;
     }
 
     // Collect option value
-    std::string value = "";
+    std::string value;
     while (stream >> word) {
-        if (value != "") {
+        if (!value.empty()) {
             value += " ";
         }
         value += word;

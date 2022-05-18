@@ -10,7 +10,7 @@ namespace UAI {
 // Apply a series of moves to the position
 // -- moves a3 d2d4
 void moves(libataxx::Position &pos, std::stringstream &stream) {
-    std::string word = "";
+    std::string word;
     while (stream >> word) {
         libataxx::Move move;
         try {
