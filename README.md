@@ -73,3 +73,7 @@ info score cp 100 depth 5 seldepth 5 time 532 nodes 2452814 nps 4607308 pv f1 a2
 bestmove f1
 quit
 ```
+
+---
+### Thanks
+- [doctest](https://github.com/doctest/doctest) - The fastest feature-rich C++11/14/17/20 single-header testing framework 

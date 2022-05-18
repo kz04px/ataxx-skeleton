@@ -41,4 +41,18 @@ add_executable(
     src/uai/uainewgame.cpp
 )
 
+# Add the executable
+add_executable(
+    tests
+    tests/main.cpp
+
+    tests/uai/moves.cpp
+    tests/uai/position.cpp
+
+    src/options.cpp
+    src/uai/moves.cpp
+    src/uai/position.cpp
+)
+
 target_link_libraries(main Threads::Threads "${CMAKE_CURRENT_SOURCE_DIR}/libs/libataxx/build/static/libataxx.a")
+target_link_libraries(tests "${CMAKE_CURRENT_SOURCE_DIR}/libs/libataxx/build/static/libataxx.a")
