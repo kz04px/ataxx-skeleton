@@ -71,7 +71,10 @@ void go(const libataxx::Position &pos, std::stringstream &stream) {
         }
     }
 
-    search_thread = std::thread(search, pos, options, &search_stop);
+    search_thread = std::thread([pos, options]() {
+        const auto bestmove = search(pos, options, &search_stop);
+        std::cout << "bestmove " << bestmove << "\n";
+    });
 }
 
 }  // namespace UAI

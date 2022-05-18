@@ -4,7 +4,7 @@
 #include "../options.hpp"
 
 // Perform a search as specified in the options
-void search(const libataxx::Position &pos, const SearchOptions &options, volatile bool *stop) {
+libataxx::Move search(const libataxx::Position &pos, const SearchOptions &options, volatile bool *stop) {
     assert(stop);
 
     int depth = MAX_DEPTH;
@@ -90,14 +90,7 @@ void search(const libataxx::Position &pos, const SearchOptions &options, volatil
         std::cout << std::endl;
     }
 
-    // Send our best move
-    if (Options::checks["Ponder"].get() && pv.size() >= 2) {
-        std::cout << "bestmove " << pv.at(0) << "ponder " << pv.at(1) << std::endl;
-    } else if (pv.size() >= 1) {
-        std::cout << "bestmove " << pv.at(0) << std::endl;
-    } else {
-        std::cout << "bestmove 0000" << std::endl;
-    }
+    return pv.at(0);
 }
 
 // Check the legality of a PV based on a given board
