@@ -53,10 +53,6 @@ o-----x
 ```
 
 ---
-### Portability
-Should work on both Windows and Linux, however, this has not been thoroughly tested. The included makefile may run into issues where it can't create the folders 'bin' and 'obj' itself. To fix this, create both folders manually alongside the 'src' folder.
-
----
 ### Example UAI usage
 ```
 uai
