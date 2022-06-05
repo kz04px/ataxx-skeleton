@@ -8,6 +8,7 @@ find_package(Threads REQUIRED)
 
 # Third party includes
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libs/libataxx/src/)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libs/)
 
 # Flags
 set(CMAKE_CXX_STANDARD 17)
